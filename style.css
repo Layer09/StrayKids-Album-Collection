@@ -131,18 +131,22 @@ button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
+    text-color: #FFFFFF;
+    background-color: #222222; 
+    border-radius: 5px;
 }
 
 #big-button {
-    font-size: 20px;
-    padding: 15px 30px;
-    width: 300px;
+    width: 270px; 
+    padding: 10px;
+    margin-bottom: 15px; /* Espacement entre le bouton long et les petits */
 }
 
-#small-buttons button {
-    font-size: 16px;
-    padding: 10px 20px;
-    width: 150px;
+#small-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Espace entre les deux petits boutons */
+    padding: 10px;
+    width: 130px;
 }
-
 
