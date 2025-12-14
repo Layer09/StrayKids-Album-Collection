@@ -113,11 +113,20 @@ header {
     color: #fff;
 }
 
-/* ----- TOOLTIP POUR ID ----- */
-
-.image-id-tooltip {
-    margin-top: 5px;
-    font-size: 14px;
-    color: #fff; 
-    text-align: center;
+/* nav */
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#big-button {
+    font-size: 20px;
+    padding: 15px 30px;
+    width: 300px;
+}
+#small-buttons button {
+    font-size: 16px;
+    padding: 10px 20px;
+    width: 150px;
 }
