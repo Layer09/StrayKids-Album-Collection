@@ -50,13 +50,16 @@ header {
 
 .album-rectangle {
     margin-left: 20px;
-    height: 360px;
+
+    /* hauteur dynamique */
+    min-height: 360px;
+    height: auto;
+
     width: calc(100% - 350px);
     box-sizing: border-box;
 
-    /* nouvelles règles */
     background-color: #E8E8E8;
-    border: 1px solid #3B3B3B;
+    border: 3px solid #3B3B3B; /* bordure plus épaisse */
     border-radius: 5px;
 
     display: flex;
