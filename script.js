@@ -114,6 +114,6 @@ function renderAlbums(albums) {
 function updateAlbumCounter(count) {
     const counter = document.getElementById('album-counter');
     if (counter) {
-        counter.textContent = `Nombre d'albums : ${count}`;
+        counter.textContent = `Nombre d'albums total : ${count}`;
     }
 }
