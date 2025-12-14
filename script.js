@@ -82,6 +82,9 @@ function renderAlbums(albums) {
             img.className = imgData.dimension === 'A' ? 'image-A' : 'image-B';
             img.style.display = 'block';
 
+            // Ajout du tooltip classique via title
+            img.title = imgData.id;
+
             imageContainer.appendChild(img);
 
             // Placeholder "?" en dessous
@@ -89,22 +92,8 @@ function renderAlbums(albums) {
             placeholder.className = 'image-placeholder';
             placeholder.textContent = '?';
 
-            // Tooltip pour afficher l'ID au survol
-            const tooltip = document.createElement('div');
-            tooltip.className = 'image-id-tooltip';
-            tooltip.textContent = imgData.id;
-            tooltip.style.display = 'none';
-
-            imageContainer.addEventListener('mouseenter', () => {
-                tooltip.style.display = 'block';
-            });
-            imageContainer.addEventListener('mouseleave', () => {
-                tooltip.style.display = 'none';
-            });
-
             block.appendChild(name);
             block.appendChild(imageContainer);
-            block.appendChild(tooltip);
             block.appendChild(placeholder);
 
             imagesContainer.appendChild(block);
