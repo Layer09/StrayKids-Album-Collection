@@ -21,7 +21,7 @@ header {
 
     color: white;
     background-color: #3B3B3B;
-    display: table;          /* permet le centrage auto */
+    display: inline;
     padding: 10px 30px;
     border-radius: 5px;
 }
