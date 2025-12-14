@@ -72,7 +72,15 @@ function renderAlbums(albums) {
 
             const img = document.createElement('img');
             img.src = imgData.path;
-            img.className = imgData.dimension === 'A' ? 'image-A' : 'image-B';
+            
+            // classe taille A ou B
+            img.classList.add(imgData.dimension === 'A' ? 'image-A' : 'image-B');
+            
+            // aura dorée si image spéciale
+            if (imgData.path.includes('Ver-limite.jpg')) {
+                img.classList.add('gold-aura');
+            }
+
 
             const placeholder = document.createElement('div');
             placeholder.className = 'image-placeholder';
