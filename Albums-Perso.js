@@ -1,7 +1,7 @@
 // Récupérer le prénom depuis le nom de fichier
 const pageName = window.location.pathname.split("/").pop(); // ex: "Albums-Laurana.html"
 const prenom = pageName.match(/^Albums-(.+)\.html$/)[1];   // "Laurana"
-const csvFile = `./${prenom}.csv`;                        // "./Laurana.csv"
+const csvFile = `./Albums-${prenom}.csv`;                        // "./Laurana.csv"
 
 // Charger Albums.csv et le CSV spécifique du prénom
 Promise.all([
