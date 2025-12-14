@@ -117,36 +117,41 @@ header {
 /* nav */
 
 nav {
-  width: 100%; 
-  background-color: #353535; 
-  justify-content: center; 
-  display: inline-block;
+  display: flex;
   flex-direction: column;
-  align-items: center; 
-  padding: 10px 0; 
+  justify-content: center;
+  align-items: center;
+  background-color: #353535;
+  width: 100%;
+  padding: 20px 0;
 }
 
+/* Style général des boutons */
 button {
-    margin: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    text-color: #FFFFFF;
-    background-color: #222222; 
-    border-radius: 5px;
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #FFFFFF;
+  background-color: #222222;
+  border-radius: 5px;
+  display: inline-block;
 }
 
+/* Bouton principal */
 #big-button {
-    width: 270px; 
-    padding: 10px;
-    margin-bottom: 15px; /* Espacement entre le bouton long et les petits */
+  width: 270px;
+  padding: 15px 20px;
+  margin-bottom: 15px; /* Espace entre le bouton grand et les petits */
 }
 
+/* Conteneur des petits boutons */
 #small-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px; /* Espace entre les deux petits boutons */
-    padding: 10px;
-    width: 130px;
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Espacement entre les deux petits boutons */
+  padding: 10px;
+  width: auto; /* Ne pas fixer la largeur ici */
 }
+
 
