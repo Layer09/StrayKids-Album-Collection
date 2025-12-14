@@ -30,7 +30,6 @@ header {
     margin-bottom: 80px;
 }
 
-
 .album-content {
     display: flex;
     align-items: center;
@@ -59,7 +58,7 @@ header {
     box-sizing: border-box;
 
     background-color: #E8E8E8;
-    border: 3px solid #3B3B3B; /* bordure plus épaisse */
+    border: 3px solid #3B3B3B;
     border-radius: 5px;
 
     display: flex;
@@ -108,3 +107,11 @@ header {
     font-size: 20px;
 }
 
+/* ----- TOOLTIP POUR ID ----- */
+
+.image-id-tooltip {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #3B3B3B;
+    text-align: center;
+}
