@@ -66,52 +66,34 @@ function renderAlbums(albums) {
             const block = document.createElement('div');
             block.className = 'album-image-block';
 
+            // Nom de l'image au-dessus
             const name = document.createElement('div');
             name.className = 'image-name';
             name.textContent = imgData.nom;
 
-            // on crée un conteneur pour l'aura
+            // Conteneur pour l'aura dorée
             const auraContainer = document.createElement('div');
             auraContainer.style.position = 'relative'; // nécessaire pour les étincelles
             if (imgData.path.includes('Ver-limite.jpg')) {
                 auraContainer.classList.add('gold-aura');
             }
-            
+
+            // Image
             const img = document.createElement('img');
             img.src = imgData.path;
             img.className = imgData.dimension === 'A' ? 'image-A' : 'image-B';
-            img.style.display = 'block'; // important pour pseudo-éléments
-            
+            img.style.display = 'block'; // important pour les pseudo-éléments
+
             auraContainer.appendChild(img);
-            
+
+            // Placeholder "?" en dessous de l'image
             const placeholder = document.createElement('div');
             placeholder.className = 'image-placeholder';
             placeholder.textContent = '?';
-            
-            // on ajoute tout au block
+
+            // On assemble le block
             block.appendChild(name);
             block.appendChild(auraContainer);
-            block.appendChild(placeholder);
-            imagesContainer.appendChild(block);
-
-            const img = document.createElement('img');
-            img.src = imgData.path;
-            
-            // classe taille A ou B
-            img.classList.add(imgData.dimension === 'A' ? 'image-A' : 'image-B');
-            
-            // aura dorée si image spéciale
-            if (imgData.path.includes('Ver-limite.jpg')) {
-                img.classList.add('gold-aura');
-            }
-
-
-            const placeholder = document.createElement('div');
-            placeholder.className = 'image-placeholder';
-            placeholder.textContent = '?';
-
-            block.appendChild(name);
-            block.appendChild(img);
             block.appendChild(placeholder);
 
             imagesContainer.appendChild(block);
