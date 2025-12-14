@@ -1,0 +1,80 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    padding: 20px;
+    text-align: center;
+}
+
+.album-section {
+    margin-bottom: 80px;
+}
+
+.album-title {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.album-content {
+    display: flex;
+    align-items: center;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.album-cover {
+    width: 350px;
+    height: 350px;
+    object-fit: cover;
+}
+
+.album-rectangle {
+    margin-left: 20px;
+    height: 360px;
+    width: calc(100% - 350px);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.album-images {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.album-image-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.album-image-block img {
+    object-fit: cover;
+}
+
+.image-A {
+    width: 175px;
+    height: 250px;
+}
+
+.image-B {
+    width: 250px;
+    height: 175px;
+}
+
+.image-name {
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.image-placeholder {
+    margin-top: 5px;
+    text-align: center;
+    font-size: 20px;
+}
