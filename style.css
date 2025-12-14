@@ -110,23 +110,31 @@ header {
 
 /* ----- Aura doré ----- */
 
+/* animation du glow doré / doré-blanc */
+@keyframes gold-glow {
+    0%   { box-shadow: 0 0 8px #D4AF37, 0 0 16px #FFD700, 0 0 24px #FFF8DC; }
+    50%  { box-shadow: 0 0 12px #FFFACD, 0 0 20px #FFD700, 0 0 28px #FFF8DC; }
+    100% { box-shadow: 0 0 8px #D4AF37, 0 0 16px #FFD700, 0 0 24px #FFF8DC; }
+}
+
+/* glow de l'aura */
 .gold-aura {
     position: relative;
-    display: inline-block; /* important pour le conteneur */
+    display: inline-block; /* nécessaire pour le conteneur */
     border-radius: 4px;
     animation: gold-glow 1.5s infinite alternate;
 }
 
-/* glow doré */
-@keyframes gold-glow {
-    0%   { box-shadow: 0 0 8px #D4AF37, 0 0 16px #FFD700, 0 0 24px #FFD700; }
-    50%  { box-shadow: 0 0 12px #FFD700, 0 0 20px #FFD700, 0 0 28px #D4AF37; }
-    100% { box-shadow: 0 0 8px #D4AF37, 0 0 16px #FFD700, 0 0 24px #FFD700; }
+/* animation des petites étincelles */
+@keyframes sparkle {
+    0%, 80%, 100% { opacity: 0; transform: scale(0.3); }
+    40% { opacity: 1; transform: scale(1); }
 }
 
-/* étincelles */
+/* générer 10 étincelles autour de l'aura */
 .gold-aura::before,
-.gold-aura::after {
+.gold-aura::after,
+.gold-aura span {
     content: '';
     position: absolute;
     width: 4px;
@@ -137,10 +145,15 @@ header {
     animation: sparkle 1.2s infinite;
 }
 
-.gold-aura::before { top: 10%; left: 20%; animation-delay: 0s; }
-.gold-aura::after  { top: 70%; left: 80%; animation-delay: 0.6s; }
+/* Positionnement aléatoire via transform et top/left différents */
+.gold-aura span:nth-child(1)  { top: 5%; left: 10%; animation-delay: 0s; }
+.gold-aura span:nth-child(2)  { top: 20%; left: 80%; animation-delay: 0.2s; }
+.gold-aura span:nth-child(3)  { top: 40%; left: 30%; animation-delay: 0.4s; }
+.gold-aura span:nth-child(4)  { top: 60%; left: 70%; animation-delay: 0.6s; }
+.gold-aura span:nth-child(5)  { top: 15%; left: 50%; animation-delay: 0.8s; }
+.gold-aura span:nth-child(6)  { top: 75%; left: 20%; animation-delay: 1s; }
+.gold-aura span:nth-child(7)  { top: 50%; left: 90%; animation-delay: 1.2s; }
+.gold-aura span:nth-child(8)  { top: 85%; left: 40%; animation-delay: 1.4s; }
+.gold-aura span:nth-child(9)  { top: 30%; left: 60%; animation-delay: 1.6s; }
+.gold-aura span:nth-child(10) { top: 90%; left: 75%; animation-delay: 1.8s; }
 
-@keyframes sparkle {
-    0%, 80%, 100% { opacity: 0; transform: scale(0.5); }
-    40% { opacity: 1; transform: scale(1); }
-}
