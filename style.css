@@ -121,6 +121,7 @@ nav {
   background-color: #353535; 
   justify-content: center; 
   display: inline-block;
+  flex-direction: column;
   align-items: center; 
   padding: 10px 0; 
 }
