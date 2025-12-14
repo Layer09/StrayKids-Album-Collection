@@ -18,7 +18,6 @@ const csvFile = `./Albums-${prenom}.csv`;                        // "./Laurana.c
     .catch(err => {
         console.error("Erreur de chargement des CSV :", err);
     });
-}
 
 // Parsing Albums.csv
 function parseAlbumsCSV(data) {
