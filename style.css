@@ -110,52 +110,41 @@ header {
 
 /* ----- Aura doré ----- */
 
-/* Conteneur principal de l'aura */
 .gold-aura {
     position: relative;
     display: inline-block;
     border-radius: 4px;
-    background-color: #E8E8E8; /* couleur de fond du rectangle */
-    box-shadow: 0 0 8px #D4AF37, 0 0 16px #FFD700, 0 0 24px #FFFACD; /* glow doré statique */
-    overflow: hidden; /* pour que la vague reste à l'intérieur */
+    box-shadow:
+        0 0 8px #D4AF37,
+        0 0 16px #FFD700,
+        0 0 24px #FFFACD;
+    /* pas de background ni overlay qui couvre l'image */
 }
 
-/* Vague diagonale animée */
-.gold-aura::after {
+/* pseudo-élément pour la vague lumineuse autour de l’aura */
+.gold-aura::before {
     content: '';
     position: absolute;
     top: -50%;
     left: -50%;
     width: 200%;
     height: 200%;
-    background: linear-gradient(
-        45deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.5) 50%,
-        rgba(255, 255, 255, 0) 100%
-    );
+    border-radius: 50%;
     pointer-events: none;
-    transform: translate(0, 0);
-    animation: gold-wave-diag 2s linear infinite;
+    box-shadow:
+        0 0 0 0 rgba(255, 255, 255, 0.0),
+        0 0 0 10px rgba(255, 255, 255, 0.2),
+        0 0 0 20px rgba(255, 255, 255, 0.0);
+    animation: wave-aura 2s linear infinite;
 }
 
-/* Animation de la vague diagonale */
-@keyframes gold-wave-diag {
-    0% {
-        transform: translate(-100%, -100%);
-    }
-    100% {
-        transform: translate(100%, 100%);
-    }
+@keyframes wave-aura {
+    0% { box-shadow: 0 0 0 0 rgba(255,255,255,0), 0 0 0 10px rgba(255,255,255,0.2), 0 0 0 20px rgba(255,255,255,0); }
+    50% { box-shadow: 0 0 0 10px rgba(255,255,255,0.2), 0 0 0 20px rgba(255,255,255,0.1), 0 0 0 30px rgba(255,255,255,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,255,255,0), 0 0 0 10px rgba(255,255,255,0.2), 0 0 0 20px rgba(255,255,255,0); }
 }
 
-/* Animation des petites étincelles */
-@keyframes sparkle {
-    0%, 80%, 100% { opacity: 0; transform: scale(0.3); }
-    40% { opacity: 1; transform: scale(1); }
-}
-
-/* Étincelles : 10 par conteneur */
+/* étincelles autour de l'aura */
 .gold-aura span {
     content: '';
     position: absolute;
@@ -167,14 +156,20 @@ header {
     animation: sparkle 1.2s infinite;
 }
 
-/* Positions et délais des 10 étincelles */
-.gold-aura span:nth-child(1)  { top: 5%; left: 10%; animation-delay: 0s; }
-.gold-aura span:nth-child(2)  { top: 20%; left: 80%; animation-delay: 0.2s; }
-.gold-aura span:nth-child(3)  { top: 40%; left: 30%; animation-delay: 0.4s; }
-.gold-aura span:nth-child(4)  { top: 60%; left: 70%; animation-delay: 0.6s; }
-.gold-aura span:nth-child(5)  { top: 15%; left: 50%; animation-delay: 0.8s; }
-.gold-aura span:nth-child(6)  { top: 75%; left: 20%; animation-delay: 1s; }
-.gold-aura span:nth-child(7)  { top: 50%; left: 90%; animation-delay: 1.2s; }
-.gold-aura span:nth-child(8)  { top: 85%; left: 40%; animation-delay: 1.4s; }
-.gold-aura span:nth-child(9)  { top: 30%; left: 60%; animation-delay: 1.6s; }
-.gold-aura span:nth-child(10) { top: 90%; left: 75%; animation-delay: 1.8s; }
+@keyframes sparkle {
+    0%, 80%, 100% { opacity: 0; transform: scale(0.3); }
+    40% { opacity: 1; transform: scale(1); }
+}
+
+/* positions des 10 étincelles autour de l'aura */
+.gold-aura span:nth-child(1)  { top: -10%; left: -10%; animation-delay: 0s; }
+.gold-aura span:nth-child(2)  { top: 0%; left: 90%; animation-delay: 0.2s; }
+.gold-aura span:nth-child(3)  { top: 50%; left: -10%; animation-delay: 0.4s; }
+.gold-aura span:nth-child(4)  { top: 110%; left: 50%; animation-delay: 0.6s; }
+.gold-aura span:nth-child(5)  { top: -5%; left: 50%; animation-delay: 0.8s; }
+.gold-aura span:nth-child(6)  { top: 80%; left: -5%; animation-delay: 1s; }
+.gold-aura span:nth-child(7)  { top: 60%; left: 110%; animation-delay: 1.2s; }
+.gold-aura span:nth-child(8)  { top: 110%; left: 80%; animation-delay: 1.4s; }
+.gold-aura span:nth-child(9)  { top: 20%; left: 110%; animation-delay: 1.6s; }
+.gold-aura span:nth-child(10) { top: 90%; left: -10%; animation-delay: 1.8s; }
+
