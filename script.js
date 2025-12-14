@@ -83,6 +83,7 @@ function renderAlbums(albums) {
             const placeholder = document.createElement('div');
             placeholder.className = 'image-placeholder';
             placeholder.textContent = '?';
+            placeholder.style.visibility = 'hidden';
 
             block.appendChild(name);
             block.appendChild(img);
