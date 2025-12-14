@@ -4,17 +4,30 @@ const prenom = pageName.match(/^Albums-(.+)\.html$/)[1];   // "Laurana"
 const csvFile = `./Albums-${prenom}.csv`;                        // "./Laurana.csv"
 
 // Charger Albums.csv et le CSV spécifique du prénom
-Promise.all([
-    fetch('./Albums.csv').then(r => r.text()),
-    fetch(csvFile).then(r => r.text())
-]).then(([albumsData, persoData]) => {
+    Promise.all([
+        fetch('./Albums.csv').then(r => r.text()),
+        fetch(csvFile).then(r => r.text())
+    ])
+    .then(([albumsData, persoData]) => {
+        const albums = parseAlbumsCSV(albumsData);
+        const persoMap = parsePersoCSV(persoData);
 
-    // --- Albums.csv ---
-    const albumLines = albumsData.trim().split('\n');
-    albumLines.shift();
+        renderAlbums(albums, persoMap);
+        updateObtainedAlbumCounter(albums, persoMap);
+    })
+    .catch(err => {
+        console.error("Erreur de chargement des CSV :", err);
+    });
+}
+
+// Parsing Albums.csv
+function parseAlbumsCSV(data) {
+    const lines = data.trim().split('\n');
+    lines.shift();
+
     const albums = {};
 
-    albumLines.forEach(line => {
+    lines.forEach(line => {
         const values = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
         const id = values[0];
         const albumName = values[1];
@@ -22,49 +35,49 @@ Promise.all([
         const nom = values[3];
         const dimension = values[4];
 
-        if (!albums[albumName]) albums[albumName] = { cover: null, images: [] };
-        if (nom === 'Couverture') albums[albumName].cover = path;
+        if (!albums[albumName]) {
+            albums[albumName] = {
+                cover: null,
+                images: []
+            };
+        }
+
+        if (nom === 'Couverture') {
+            albums[albumName].cover = path;
+        }
+
         if (dimension === 'A' || dimension === 'B') {
-            albums[albumName].images.push({ id, path, nom, dimension });
+            albums[albumName].images.push({
+                id,
+                path,
+                nom,
+                dimension
+            });
         }
     });
 
-    // --- CSV spécifique du prénom ---
-    const persoLines = persoData.trim().split('\n');
-    persoLines.shift();
-    const persoMap = {}; // id => obtenu
-    persoLines.forEach(line => {
-        const values = line.split(',').map(v => v.trim());
-        persoMap[values[0]] = values[1]; // 0 ou 1
-    });
-    
-    renderAlbums(albums, persoMap);
-    updateObtainedAlbumCounter(albums, persoMap);
-    
-    function updateObtainedAlbumCounter(albums, persoMap) {
-        let obtainedCount = 0;
-        const totalCount = Object.keys(albums).length;
-    
-        Object.values(albums).forEach(album => {
-            const allObtained = album.images.every(img => persoMap[img.id] === '1');
-            if (allObtained) {
-                obtainedCount++;
-            }
-        });
-    
-        const counter = document.getElementById('album-counter');
-        if (counter) {
-            counter.textContent = `Nombre d'albums obtenus : ${obtainedCount} / ${totalCount}`;
-        }
-    }
+    return albums;
 }
-    }
 
-});
+// Parsing Albums-Prenom.csv
+function parsePersoCSV(data) {
+    const lines = data.trim().split('\n');
+    lines.shift();
 
-// --- Fonction pour afficher les albums ---
+    const map = {};
+
+    lines.forEach(line => {
+        const values = line.split(',').map(v => v.trim());
+        map[values[0]] = values[1]; // "0" ou "1"
+    });
+
+    return map;
+}
+
+// Rendu des albums
 function renderAlbums(albums, persoMap) {
     const container = document.getElementById('albums-container');
+    container.innerHTML = '';
 
     Object.keys(albums).forEach(albumName => {
         const album = albums[albumName];
@@ -72,7 +85,7 @@ function renderAlbums(albums, persoMap) {
         const section = document.createElement('section');
         section.className = 'album-section';
 
-        const title = document.createElement('h1');
+        const title = document.createElement('h2');
         title.className = 'album-title';
         title.textContent = albumName;
 
@@ -97,16 +110,10 @@ function renderAlbums(albums, persoMap) {
             name.className = 'image-name';
             name.textContent = imgData.nom;
 
-            const imageContainer = document.createElement('div');
-            imageContainer.style.position = 'relative';
-
             const img = document.createElement('img');
             img.src = imgData.path;
             img.className = imgData.dimension === 'A' ? 'image-A' : 'image-B';
-            img.style.display = 'block';
-            img.title = imgData.id; // tooltip avec ID
-
-            imageContainer.appendChild(img);
+            img.title = imgData.id;
 
             const placeholder = document.createElement('div');
             placeholder.className = 'image-placeholder';
@@ -114,14 +121,14 @@ function renderAlbums(albums, persoMap) {
             const obtenu = persoMap[imgData.id];
             if (obtenu === '1') {
                 placeholder.textContent = 'Acquis ✓';
-                placeholder.style.color = 'green';
+                placeholder.style.color = '#6aff6a';
             } else {
-                placeholder.textContent = 'Manquant ☹';
-                placeholder.style.color = 'red';
+                placeholder.textContent = 'Manquant ✕';
+                placeholder.style.color = '#ff6a6a';
             }
 
             block.appendChild(name);
-            block.appendChild(imageContainer);
+            block.appendChild(img);
             block.appendChild(placeholder);
 
             imagesContainer.appendChild(block);
@@ -136,4 +143,24 @@ function renderAlbums(albums, persoMap) {
 
         container.appendChild(section);
     });
+}
+
+// Compteur X / Y
+function updateObtainedAlbumCounter(albums, persoMap) {
+    let obtainedCount = 0;
+    const totalCount = Object.keys(albums).length;
+
+    Object.values(albums).forEach(album => {
+        const allObtained = album.images.length > 0 &&
+            album.images.every(img => persoMap[img.id] === '1');
+
+        if (allObtained) {
+            obtainedCount++;
+        }
+    });
+
+    const counter = document.getElementById('album-counter');
+    if (counter) {
+        counter.textContent = `Nombre d'albums obtenus : ${obtainedCount} / ${totalCount}`;
+    }
 }
