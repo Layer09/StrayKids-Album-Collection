@@ -48,6 +48,11 @@ header {
     border: 2px solid #444;
 }
 
+.album-image-block img {
+    object-fit: cover;
+    border: 2px solid #fff;
+}
+
 /* ----- RECTANGLE ----- */
 
 .album-rectangle {
