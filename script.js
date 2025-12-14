@@ -2,13 +2,13 @@ fetch('./Albums.csv')
     .then(response => response.text())
     .then(data => {
         const lines = data.trim().split('\n');
-        const headers = lines.shift(); // retire l'en-tête
+        lines.shift(); // retirer l'en-tête
 
         const albums = {};
 
         lines.forEach(line => {
             const values = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
-            const id = values[0];          // première colonne
+            const id = values[0];
             const albumName = values[1];
             const path = values[2];
             const nom = values[3];
@@ -27,7 +27,7 @@ fetch('./Albums.csv')
 
             if (dimension === 'A' || dimension === 'B') {
                 albums[albumName].images.push({
-                    id,       // ajout de l'ID
+                    id,
                     path,
                     nom,
                     dimension
@@ -36,11 +36,13 @@ fetch('./Albums.csv')
         });
 
         renderAlbums(albums);
-        updateAlbumCounter(Object.keys(albums).length);
+        updateAlbumCounterByVersion(albums);
     });
 
+// Rendu des albums
 function renderAlbums(albums) {
     const container = document.getElementById('albums-container');
+    container.innerHTML = '';
 
     Object.keys(albums).forEach(albumName => {
         const album = albums[albumName];
@@ -69,32 +71,21 @@ function renderAlbums(albums) {
             const block = document.createElement('div');
             block.className = 'album-image-block';
 
-            // Nom de l'image au-dessus
             const name = document.createElement('div');
             name.className = 'image-name';
             name.textContent = imgData.nom;
 
-            // Conteneur pour l'image
-            const imageContainer = document.createElement('div');
-            imageContainer.style.position = 'relative';
-
             const img = document.createElement('img');
             img.src = imgData.path;
             img.className = imgData.dimension === 'A' ? 'image-A' : 'image-B';
-            img.style.display = 'block';
-
-            // Ajout du tooltip classique via title
             img.title = imgData.id;
 
-            imageContainer.appendChild(img);
-
-            // Placeholder "?" en dessous
             const placeholder = document.createElement('div');
             placeholder.className = 'image-placeholder';
             placeholder.textContent = '?';
 
             block.appendChild(name);
-            block.appendChild(imageContainer);
+            block.appendChild(img);
             block.appendChild(placeholder);
 
             imagesContainer.appendChild(block);
@@ -111,7 +102,22 @@ function renderAlbums(albums) {
     });
 }
 
-function updateAlbumCounter(count) {
+// Compteur
+function updateAlbumCounterByVersion(albums) {
+    const versions = {};
+
+    Object.entries(albums).forEach(([albumName, album]) => {
+        album.images.forEach(img => {
+            const versionKey = `${albumName}||${img.nom}`;
+
+            if (!versions[versionKey]) {
+                versions[versionKey] = true;
+            }
+        });
+    });
+
+    const count = Object.keys(versions).length;
+
     const counter = document.getElementById('album-counter');
     if (counter) {
         counter.textContent = `Nombre d'albums total : ${count}`;
