@@ -146,20 +146,35 @@ function renderAlbums(albums, persoMap) {
 
 // Compteur X / Y
 function updateObtainedAlbumCounter(albums, persoMap) {
-    let obtainedCount = 0;
-    const totalCount = Object.keys(albums).length;
+    const versions = {};
 
-    Object.values(albums).forEach(album => {
-        const allObtained = album.images.length > 0 &&
-            album.images.every(img => persoMap[img.id] === '1');
+    // Regrouper par version (Album + Nom)
+    Object.entries(albums).forEach(([albumName, album]) => {
+        album.images.forEach(img => {
+            const versionKey = `${albumName}||${img.nom}`;
 
+            if (!versions[versionKey]) {
+                versions[versionKey] = [];
+            }
+
+            versions[versionKey].push(img);
+        });
+    });
+
+    const totalVersions = Object.keys(versions).length;
+    let obtainedVersions = 0;
+
+    Object.values(versions).forEach(images => {
+        const allObtained = images.every(img => persoMap[img.id] === '1');
         if (allObtained) {
-            obtainedCount++;
+            obtainedVersions++;
         }
     });
 
     const counter = document.getElementById('album-counter');
     if (counter) {
-        counter.textContent = `Nombre d'albums obtenus : ${obtainedCount} / ${totalCount}`;
+        counter.textContent =
+            `Nombre d'albums obtenus : ${obtainedVersions} / ${totalVersions}`;
     }
 }
+
