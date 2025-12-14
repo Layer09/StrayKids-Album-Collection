@@ -15,17 +15,17 @@ header {
 }
 
 .album-title {
-    text-align: center;
     font-size: 28px;
-    margin-bottom: 20px;
+    margin: 0 auto 20px auto; /* centre horizontalement */
+    text-align: center;
 
-    /* nouvelles règles */
     color: white;
     background-color: #3B3B3B;
-    display: inline-block;
+    display: table;          /* permet le centrage auto */
     padding: 10px 30px;
     border-radius: 5px;
 }
+
 
 .album-content {
     display: flex;
