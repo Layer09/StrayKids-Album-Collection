@@ -37,8 +37,29 @@ Promise.all([
         const values = line.split(',').map(v => v.trim());
         persoMap[values[0]] = values[1]; // 0 ou 1
     });
-
+    
     renderAlbums(albums, persoMap);
+    updateObtainedAlbumCounter(albums, persoMap);
+    
+    function updateObtainedAlbumCounter(albums, persoMap) {
+        let obtainedCount = 0;
+        const totalCount = Object.keys(albums).length;
+    
+        Object.values(albums).forEach(album => {
+            const allObtained = album.images.every(img => persoMap[img.id] === '1');
+            if (allObtained) {
+                obtainedCount++;
+            }
+        });
+    
+        const counter = document.getElementById('album-counter');
+        if (counter) {
+            counter.textContent = `Nombre d'albums obtenus : ${obtainedCount} / ${totalCount}`;
+        }
+    }
+}
+    }
+
 });
 
 // --- Fonction pour afficher les albums ---
