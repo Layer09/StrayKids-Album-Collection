@@ -111,18 +111,20 @@ header {
 /* ----- Aura doré ----- */
 
 /* animation du glow doré / doré-blanc */
-@keyframes gold-glow {
-    0%   { box-shadow: 0 0 8px #D4AF37, 0 0 16px #FFD700, 0 0 24px #FFF8DC; }
-    50%  { box-shadow: 0 0 12px #FFFACD, 0 0 20px #FFD700, 0 0 28px #FFF8DC; }
-    100% { box-shadow: 0 0 8px #D4AF37, 0 0 16px #FFD700, 0 0 24px #FFF8DC; }
+/* animation vague dorée */
+@keyframes gold-wave {
+    0%   { box-shadow: 0 0 5px #FFD700, 0 0 10px #D4AF37, 0 0 15px #FFFACD; }
+    25%  { box-shadow: 0 0 8px #FFFACD, 0 0 12px #FFD700, 0 0 18px #D4AF37; }
+    50%  { box-shadow: 0 0 12px #FFD700, 0 0 16px #FFFACD, 0 0 22px #FFD700; }
+    75%  { box-shadow: 0 0 8px #D4AF37, 0 0 12px #FFFACD, 0 0 18px #FFD700; }
+    100% { box-shadow: 0 0 5px #FFD700, 0 0 10px #D4AF37, 0 0 15px #FFFACD; }
 }
 
-/* glow de l'aura */
 .gold-aura {
     position: relative;
-    display: inline-block; /* nécessaire pour le conteneur */
+    display: inline-block;
     border-radius: 4px;
-    animation: gold-glow 1.5s infinite alternate;
+    animation: gold-wave 2s infinite linear; /* vague continue */
 }
 
 /* animation des petites étincelles */
