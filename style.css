@@ -110,32 +110,52 @@ header {
 
 /* ----- Aura doré ----- */
 
-/* animation du glow doré / doré-blanc */
-/* animation vague dorée */
-@keyframes gold-wave {
-    0%   { box-shadow: 0 0 5px #FFD700, 0 0 10px #D4AF37, 0 0 15px #FFFACD; }
-    25%  { box-shadow: 0 0 8px #FFFACD, 0 0 12px #FFD700, 0 0 18px #D4AF37; }
-    50%  { box-shadow: 0 0 12px #FFD700, 0 0 16px #FFFACD, 0 0 22px #FFD700; }
-    75%  { box-shadow: 0 0 8px #D4AF37, 0 0 12px #FFFACD, 0 0 18px #FFD700; }
-    100% { box-shadow: 0 0 5px #FFD700, 0 0 10px #D4AF37, 0 0 15px #FFFACD; }
-}
-
+/* Conteneur principal de l'aura */
 .gold-aura {
     position: relative;
     display: inline-block;
     border-radius: 4px;
-    animation: gold-wave 2s infinite linear; /* vague continue */
+    background-color: #E8E8E8; /* couleur de fond du rectangle */
+    box-shadow: 0 0 8px #D4AF37, 0 0 16px #FFD700, 0 0 24px #FFFACD; /* glow doré statique */
+    overflow: hidden; /* pour que la vague reste à l'intérieur */
 }
 
-/* animation des petites étincelles */
+/* Vague diagonale animée */
+.gold-aura::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.5) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    pointer-events: none;
+    transform: translate(0, 0);
+    animation: gold-wave-diag 2s linear infinite;
+}
+
+/* Animation de la vague diagonale */
+@keyframes gold-wave-diag {
+    0% {
+        transform: translate(-100%, -100%);
+    }
+    100% {
+        transform: translate(100%, 100%);
+    }
+}
+
+/* Animation des petites étincelles */
 @keyframes sparkle {
     0%, 80%, 100% { opacity: 0; transform: scale(0.3); }
     40% { opacity: 1; transform: scale(1); }
 }
 
-/* générer 10 étincelles autour de l'aura */
-.gold-aura::before,
-.gold-aura::after,
+/* Étincelles : 10 par conteneur */
 .gold-aura span {
     content: '';
     position: absolute;
@@ -147,7 +167,7 @@ header {
     animation: sparkle 1.2s infinite;
 }
 
-/* Positionnement aléatoire via transform et top/left différents */
+/* Positions et délais des 10 étincelles */
 .gold-aura span:nth-child(1)  { top: 5%; left: 10%; animation-delay: 0s; }
 .gold-aura span:nth-child(2)  { top: 20%; left: 80%; animation-delay: 0.2s; }
 .gold-aura span:nth-child(3)  { top: 40%; left: 30%; animation-delay: 0.4s; }
@@ -158,4 +178,3 @@ header {
 .gold-aura span:nth-child(8)  { top: 85%; left: 40%; animation-delay: 1.4s; }
 .gold-aura span:nth-child(9)  { top: 30%; left: 60%; animation-delay: 1.6s; }
 .gold-aura span:nth-child(10) { top: 90%; left: 75%; animation-delay: 1.8s; }
-
