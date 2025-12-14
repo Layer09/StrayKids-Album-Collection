@@ -8,6 +8,7 @@ fetch('./Albums.csv')
 
         lines.forEach(line => {
             const values = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+            const id = values[0];          // première colonne
             const albumName = values[1];
             const path = values[2];
             const nom = values[3];
@@ -26,6 +27,7 @@ fetch('./Albums.csv')
 
             if (dimension === 'A' || dimension === 'B') {
                 albums[albumName].images.push({
+                    id,       // ajout de l'ID
                     path,
                     nom,
                     dimension
@@ -71,29 +73,38 @@ function renderAlbums(albums) {
             name.className = 'image-name';
             name.textContent = imgData.nom;
 
-            // Conteneur pour l'aura dorée
-            const auraContainer = document.createElement('div');
-            auraContainer.style.position = 'relative'; // nécessaire pour les étincelles
-            if (imgData.path.includes('Ver-limite.jpg')) {
-                auraContainer.classList.add('gold-aura');
-            }
+            // Conteneur pour l'image
+            const imageContainer = document.createElement('div');
+            imageContainer.style.position = 'relative';
 
-            // Image
             const img = document.createElement('img');
             img.src = imgData.path;
             img.className = imgData.dimension === 'A' ? 'image-A' : 'image-B';
-            img.style.display = 'block'; // important pour les pseudo-éléments
+            img.style.display = 'block';
 
-            auraContainer.appendChild(img);
+            imageContainer.appendChild(img);
 
-            // Placeholder "?" en dessous de l'image
+            // Placeholder "?" en dessous
             const placeholder = document.createElement('div');
             placeholder.className = 'image-placeholder';
             placeholder.textContent = '?';
 
-            // On assemble le block
+            // Tooltip pour afficher l'ID au survol
+            const tooltip = document.createElement('div');
+            tooltip.className = 'image-id-tooltip';
+            tooltip.textContent = imgData.id;
+            tooltip.style.display = 'none';
+
+            imageContainer.addEventListener('mouseenter', () => {
+                tooltip.style.display = 'block';
+            });
+            imageContainer.addEventListener('mouseleave', () => {
+                tooltip.style.display = 'none';
+            });
+
             block.appendChild(name);
-            block.appendChild(auraContainer);
+            block.appendChild(imageContainer);
+            block.appendChild(tooltip);
             block.appendChild(placeholder);
 
             imagesContainer.appendChild(block);
