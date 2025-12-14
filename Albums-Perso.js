@@ -51,7 +51,7 @@ function renderAlbums(albums, persoMap) {
         const section = document.createElement('section');
         section.className = 'album-section';
 
-        const title = document.createElement('h2');
+        const title = document.createElement('h1');
         title.className = 'album-title';
         title.textContent = albumName;
 
