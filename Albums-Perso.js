@@ -92,10 +92,10 @@ function renderAlbums(albums, persoMap) {
 
             const obtenu = persoMap[imgData.id];
             if (obtenu === '1') {
-                placeholder.textContent = 'Acquis =)';
+                placeholder.textContent = 'Acquis ✓';
                 placeholder.style.color = 'green';
             } else {
-                placeholder.textContent = 'Manquant =(';
+                placeholder.textContent = 'Manquant ☹';
                 placeholder.style.color = 'red';
             }
 
