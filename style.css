@@ -151,7 +151,7 @@ button {
   justify-content: center;
   gap: 10px; /* Espacement entre les deux petits boutons */
   padding: 10px;
-  width: auto; /* Ne pas fixer la largeur ici */
+  width: 130px;
 }
 
 
