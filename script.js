@@ -36,6 +36,7 @@ fetch('./Albums.csv')
         });
 
         renderAlbums(albums);
+        updateAlbumCounter(Object.keys(albums).length);
     });
 
 function renderAlbums(albums) {
@@ -108,4 +109,11 @@ function renderAlbums(albums) {
 
         container.appendChild(section);
     });
+}
+
+function updateAlbumCounter(count) {
+    const counter = document.getElementById('album-counter');
+    if (counter) {
+        counter.textContent = `Nombre d'albums : ${count}`;
+    }
 }
