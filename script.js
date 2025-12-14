@@ -70,6 +70,30 @@ function renderAlbums(albums) {
             name.className = 'image-name';
             name.textContent = imgData.nom;
 
+            // on crée un conteneur pour l'aura
+            const auraContainer = document.createElement('div');
+            auraContainer.style.position = 'relative'; // nécessaire pour les étincelles
+            if (imgData.path.includes('Ver-limite.jpg')) {
+                auraContainer.classList.add('gold-aura');
+            }
+            
+            const img = document.createElement('img');
+            img.src = imgData.path;
+            img.className = imgData.dimension === 'A' ? 'image-A' : 'image-B';
+            img.style.display = 'block'; // important pour pseudo-éléments
+            
+            auraContainer.appendChild(img);
+            
+            const placeholder = document.createElement('div');
+            placeholder.className = 'image-placeholder';
+            placeholder.textContent = '?';
+            
+            // on ajoute tout au block
+            block.appendChild(name);
+            block.appendChild(auraContainer);
+            block.appendChild(placeholder);
+            imagesContainer.appendChild(block);
+
             const img = document.createElement('img');
             img.src = imgData.path;
             
