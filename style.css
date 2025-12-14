@@ -8,6 +8,8 @@ header {
     text-align: center;
 }
 
+/* ----- ALBUM ----- */
+
 .album-section {
     margin-bottom: 80px;
 }
@@ -16,6 +18,13 @@ header {
     text-align: center;
     font-size: 28px;
     margin-bottom: 20px;
+
+    /* nouvelles règles */
+    color: white;
+    background-color: #3B3B3B;
+    display: inline-block;
+    padding: 10px 30px;
+    border-radius: 5px;
 }
 
 .album-content {
@@ -25,22 +34,33 @@ header {
     margin-right: 5%;
 }
 
+/* ----- COUVERTURE ----- */
+
 .album-cover {
     width: 350px;
     height: 350px;
     object-fit: cover;
 }
 
+/* ----- RECTANGLE ----- */
+
 .album-rectangle {
     margin-left: 20px;
     height: 360px;
     width: calc(100% - 350px);
+    box-sizing: border-box;
+
+    /* nouvelles règles */
+    background-color: #E8E8E8;
+    border: 1px solid #3B3B3B;
     border-radius: 5px;
+
     display: flex;
     align-items: center;
     padding: 20px;
-    box-sizing: border-box;
 }
+
+/* ----- IMAGES A & B ----- */
 
 .album-images {
     display: flex;
@@ -67,6 +87,8 @@ header {
     width: 250px;
     height: 175px;
 }
+
+/* ----- TEXTE ----- */
 
 .image-name {
     margin-bottom: 5px;
