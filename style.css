@@ -141,7 +141,7 @@ button {
 
 /* Bouton principal */
 #big-button {
-  width: 270px;
+  width: 280px;
   padding: 15px 20px;
   margin-bottom: 15px; /* Espace entre le bouton grand et les petits */
 }
