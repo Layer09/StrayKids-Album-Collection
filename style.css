@@ -114,6 +114,12 @@ header {
     color: #fff;
 }
 
+#album-counter {
+    margin-top: 10px;
+    font-size: 22px;
+    color: #ccc;
+}
+
 /* nav */
 
 nav {
