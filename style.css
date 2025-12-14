@@ -109,10 +109,47 @@ header {
 }
 
 /* ----- Aura doré ----- */
+/* animation du glow doré */
+@keyframes gold-glow {
+    0%   { box-shadow: 0 0 8px #D4AF37, 0 0 16px #FFD700, 0 0 24px #FFD700; }
+    50%  { box-shadow: 0 0 12px #FFD700, 0 0 20px #FFD700, 0 0 28px #D4AF37; }
+    100% { box-shadow: 0 0 8px #D4AF37, 0 0 16px #FFD700, 0 0 24px #FFD700; }
+}
+
+/* animation des petites étincelles */
+@keyframes sparkle {
+    0%, 80%, 100% { opacity: 0; transform: scale(0.5); }
+    40% { opacity: 1; transform: scale(1); }
+}
+
+/* classe principale */
 .gold-aura {
-    box-shadow:
-        0 0 8px rgba(212, 175, 55, 0.8),
-        0 0 16px rgba(212, 175, 55, 0.6),
-        0 0 24px rgba(212, 175, 55, 0.4);
+    position: relative;      /* nécessaire pour pseudo-éléments */
     border-radius: 4px;
+    animation: gold-glow 1.5s infinite alternate;
+}
+
+/* pseudo-éléments pour les étincelles */
+.gold-aura::before,
+.gold-aura::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    animation: sparkle 1.2s infinite;
+}
+
+.gold-aura::before {
+    top: 10%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.gold-aura::after {
+    top: 70%;
+    left: 80%;
+    animation-delay: 0.6s;
 }
