@@ -107,3 +107,12 @@ header {
     text-align: center;
     font-size: 20px;
 }
+
+/* ----- Aura doré ----- */
+.gold-aura {
+    box-shadow:
+        0 0 8px rgba(212, 175, 55, 0.8),
+        0 0 16px rgba(212, 175, 55, 0.6),
+        0 0 24px rgba(212, 175, 55, 0.4);
+    border-radius: 4px;
+}
