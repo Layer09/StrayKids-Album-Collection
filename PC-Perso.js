@@ -490,12 +490,13 @@ function tableTotal(title, counters) {
     }
 
     // Total cumulé
-    tableTotal("Total cumulé", [
-        {
-            label: "Total Officiel + Non officiel",
-            values: offP.map((v, i) => v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i])
-        }
-    ]);
-
+    if (hasOfficiel && hasNonOfficiel) {
+        tableTotal("Total cumulé", [
+            {
+                label: "Total Officiel + Non officiel",
+                values: offP.map((v, i) => v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i])
+            }
+        ]);
+    }
 })();
 
