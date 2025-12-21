@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" type="image/png" href="images/Logo-SKZ.png">
+    <title>Photocards - Stray Kids</title>
+</head>
+
+<body>
+<header>
+    <h1 style="color: #DDDD00;">Andy</h1>
+    <div id="vide" style="font-size: 22px; color: #DDDDDD">Photocards</div>
+</header>
+<nav class="main-nav">
+    <!-- Colonne gauche : Albums -->
+    <div class="nav-column">
+        <button class="big-button" onclick="window.location.href='albums-default.html'">
+            Liste d'album
+        </button>
+        <div class="small-buttons">
+            <button onclick="window.location.href='Albums-Laurana.html'">Laurana</button>
+            <button onclick="window.location.href='Albums-Andy.html'">Andy</button>
+        </div>
+    </div>
+
+    <!-- Séparateur vertical -->
+    <div class="nav-separator"></div>
+
+    <!-- Colonne droite : Photocards -->
+    <div class="nav-column">
+        <button class="big-button">
+            Photocards
+        </button>
+        <div class="small-buttons">
+            <button onclick="window.location.href='PC-Laurana.html'">Laurana</button>
+            <button onclick="window.location.href='PC-Andy.html'">Andy</button>
+        </div>
+    </div>
+</nav>
+
+<main id="pc-container">
+    <div id="pc-details"><!-- Les tableaux seront injectés ici --></div>
+    <div id="pc-recap"><!-- Les tableaux seront injectés ici --></div>
+</main>
+
+<script src="./PC-Perso.js"></script>
+</body>
+</html>
