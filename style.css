@@ -179,7 +179,7 @@ section {
 
 /* Titres de CATÉGORIES */
 .pc-category {
-    text-align: center;
+    text-align: center;  /* centré sur la page */
     font-size: 36px;
     margin: 70px 0 50px;
     padding-bottom: 12px;
