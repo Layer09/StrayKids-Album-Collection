@@ -284,20 +284,20 @@ function tableTotal(title, counters) {
     const s = section(recap, title);
     const table = document.createElement("table");
 
+    // === ENTÊTE ===
     const thead = document.createElement("thead");
     const trh = document.createElement("tr");
     trh.appendChild(document.createElement("th"));
-
     MEMBERS.forEach((m, i) => {
         const th = document.createElement("th");
         th.textContent = m;
         th.appendChild(img(MEMBER_IMAGES[i], "member-icon"));
         trh.appendChild(th);
     });
-
     thead.appendChild(trh);
     table.appendChild(thead);
 
+    // === CORPS ===
     const tbody = document.createElement("tbody");
 
     counters.forEach(row => {
@@ -309,15 +309,36 @@ function tableTotal(title, counters) {
         row.values.forEach((v, i) => {
             const td = document.createElement("td");
             td.textContent = v;
+            td.appendChild(img(MEMBER_IMAGES[i], "member-icon"));
             tr.appendChild(td);
         });
 
         tbody.appendChild(tr);
     });
 
+    // === LIGNE TOTAL DES COLONNES ===
+    const totalRow = document.createElement("tr");
+    totalRow.className = "total-row";
+
+    const thTotal = document.createElement("th");
+    thTotal.textContent = "Total";
+    totalRow.appendChild(thTotal);
+
+    for (let i = 0; i < MEMBERS.length; i++) {
+        let sum = 0;
+        counters.forEach(row => {
+            sum += row.values[i];
+        });
+        const td = document.createElement("td");
+        td.textContent = sum;
+        totalRow.appendChild(td);
+    }
+
+    tbody.appendChild(totalRow);
     table.appendChild(tbody);
     s.appendChild(table);
 }
+
 
 
 /*************************************************
