@@ -47,10 +47,11 @@ function img(src, cls = "") {
     return i;
 }
 
-function section(container, title) {
+function section(container, title, isCategory = false) {
     const s = document.createElement("section");
-    const h = document.createElement("h2");
+    const h = document.createElement(isCategory ? "h1" : "h2");
     h.textContent = title;
+    h.className = isCategory ? "pc-category" : "pc-table-title";
     s.appendChild(h);
     container.appendChild(s);
     return s;
@@ -315,7 +316,7 @@ function tableTotal(title, counters) {
 (async function init() {
 
     /* ========= OFFICIEL ========= */
-    section(details, "Officiel");
+    section(details, "Officiel", true);
 
     const soloOff = await loadCSV(`./PC-csv/${prenom}/Solo-off.csv`);
     const bonusOff = await loadCSV(`./PC-csv/${prenom}/Bonus-off.csv`);
@@ -329,7 +330,7 @@ function tableTotal(title, counters) {
     hr(details);
 
     /* ========= NON OFFICIEL ========= */
-    section(details, "Non officiel");
+    section(details, "Non officiel", true);
 
     const soloNon = await loadCSV(`./PC-csv/${prenom}/Solo-non_off.csv`);
     const duoNon = await loadCSV(`./PC-csv/${prenom}/Duos-non_off.csv`);
@@ -340,7 +341,7 @@ function tableTotal(title, counters) {
     hr(details);
 
     /* ========= TOTAL ========= */
-    section(recap, "Total");
+    section(recap, "Total", true);
 
     const offP = emptyCounter(), offB = emptyCounter(), offX = emptyCounter(), offD = emptyCounter();
     const nonP = emptyCounter(), nonD = emptyCounter();
