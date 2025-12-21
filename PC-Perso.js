@@ -61,7 +61,7 @@ function img(src, cls = "") {
 function section(container, title, isCategory = false) {
     const s = document.createElement("section");
     const h = document.createElement(isCategory ? "h1" : "h2");
-    h.textContent = title;
+    h.innerText = title;
     h.className = isCategory ? "pc-category" : "pc-table-title";
     s.appendChild(h);
     container.appendChild(s);
@@ -494,7 +494,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
     if (hasOfficiel && hasNonOfficiel) {
         tableTotal("Total cumulé", [
             {
-                label: "Total Officiel + \nNon officiel",
+                label: "Total Officiel + <br> Non officiel",
                 values: offP.map((v, i) => v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i])
             }
         ],
