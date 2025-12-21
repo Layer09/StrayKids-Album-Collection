@@ -26,7 +26,7 @@ const MEMBER_IMAGES = [
     "./images/skzoo/FoxINy.png"
 ];
 
-const LOGO_IMAGE = "./images/Logo.png";
+const LOGO_IMAGE = "./images/Logo-StrayKids.png";
 
 const details = document.getElementById("pc-details");
 const recap = document.getElementById("pc-recap");
