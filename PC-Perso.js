@@ -268,29 +268,35 @@ function emptyCounter() {
     return Array(9).fill(0);
 }
 
-function addSolo(counter, csv) {
-    if (!csv || csv.length < 2) return;
-
-    // Vérifier si le CSV a des colonnes "Nom Album" et "Chemin Album"
-    const offset = csv[0].includes("Nom Album") && csv[0].includes("Chemin Album") ? 2 : 0;
-
+// Solos officiels (Nom Album + Chemin Album aux colonnes 0/1)
+function addSoloOfficial(counter, csv) {
     for (let r = 1; r < csv.length; r++) {
-        for (let c = 0; c < MEMBERS.length; c++) {
-            const val = parseInt(csv[r][c + offset], 10) || 0;
-            counter[c] += val;
+        for (let c = 0; c < 9; c++) {
+            counter[c] += parseInt(csv[r][c + 2], 10) || 0;
         }
     }
 }
 
-
-function addDuos(counter, csv) {
-    const h = csv[0];
+// Solos non-officiels (pas de colonnes Nom Album / Chemin Album)
+function addSoloNonOfficial(counter, csv) {
     for (let r = 1; r < csv.length; r++) {
-        for (let c = 2; c < h.length; c++) {
-            const v = parseInt(csv[r][c], 10);
+        for (let c = 0; c < 9; c++) {
+            counter[c] += parseInt(csv[r][c], 10) || 0;
+        }
+    }
+}
+
+// Duos (officiel ou non)
+function addDuos(counter, csv) {
+    const header = csv[0];
+    for (let r = 1; r < csv.length; r++) {
+        for (let c = 2; c < header.length; c++) {
+            const v = parseInt(csv[r][c], 10) || 0;
             if (!v) continue;
-            counter[parseInt(h[c][0], 10)] += v;
-            counter[parseInt(h[c][1], 10)] += v;
+            const a = parseInt(header[c][0], 10);
+            const b = parseInt(header[c][1], 10);
+            counter[a] += v;
+            counter[b] += v;
         }
     }
 }
@@ -391,14 +397,15 @@ function tableTotal(title, counters) {
 
     const offP = emptyCounter(), offB = emptyCounter(), offX = emptyCounter(), offD = emptyCounter();
     const nonP = emptyCounter(), nonD = emptyCounter();
-
-    addSolo(offP, soloOff);
-    addSolo(offB, bonusOff);
-    addSolo(offX, xxlOff);
+    
+    addSoloOfficial(offP, soloOff);
+    addSoloOfficial(offB, bonusOff);
+    addSoloOfficial(offX, xxlOff);
     addDuos(offD, duoOff);
-
-    addSolo(nonP, soloNon);
+    
+    addSoloNonOfficial(nonP, soloNon);
     addDuos(nonD, duoNon);
+
 
     tableTotal("Total officiel", [
         { label: "Photocards", values: offP },
