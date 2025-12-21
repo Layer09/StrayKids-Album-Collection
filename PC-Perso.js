@@ -14,7 +14,18 @@ const MEMBERS = [
     "I.N"
 ];
 
-const MEMBER_IMAGES = MEMBERS.map((_, i) => `./images/${i + 1}.jpg`);
+const MEMBER_IMAGES = [
+    "./images/Unknown.png",
+    "./images/WolfChan.png",
+    "./images/LeeBit.png",
+    "./images/Dwaekki.png",
+    "./images/Jiniret.png",
+    "./images/HanQuokka.png",
+    "./images/Bbokari.png",
+    "./images/PuppyM.png",
+    "./images/FoxINy.png"
+];
+
 const LOGO_IMAGE = "./images/Logo.png";
 
 const details = document.getElementById("pc-details");
@@ -298,7 +309,6 @@ function tableTotal(title, counters) {
         row.values.forEach((v, i) => {
             const td = document.createElement("td");
             td.textContent = v;
-            td.appendChild(img(MEMBER_IMAGES[i], "member-icon"));
             tr.appendChild(td);
         });
 
