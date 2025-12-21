@@ -319,6 +319,7 @@ function tableTotal(title, counters) {
     s.appendChild(table);
 }
 
+
 /*************************************************
  * INIT
  *************************************************/
@@ -372,13 +373,13 @@ function tableTotal(title, counters) {
     ]);
 
     tableTotal("Total non officiel", [
-        { label: "Photocards", values: nonP },
+        { label: "Solos", values: nonP },
         { label: "Duos", values: nonD }
     ]);
 
     tableTotal("Total cumulé", [
         {
-            label: "Total",
+            label: "Total Officiel + Non officiel",
             values: offP.map((v, i) => v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i])
         }
     ]);
