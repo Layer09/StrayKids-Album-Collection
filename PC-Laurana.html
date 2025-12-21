@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" type="image/png" href="images/Logo.png">
+    <title>Photocards - Stray Kids</title>
+</head>
+
+<body>
+<header>
+    <h1 style="color: #7ACDFF;">Laurana</h1>
+    <div id="pc-counter"></div>
+</header>
+<nav class="main-nav">
+    <!-- Colonne gauche : Albums -->
+    <div class="nav-column">
+        <button class="big-button" onclick="window.location.href='albums-default.html'">
+            Liste d'album
+        </button>
+        <div class="small-buttons">
+            <button onclick="window.location.href='Albums-Laurana.html'">Laurana</button>
+            <button onclick="window.location.href='Albums-Andy.html'">Andy</button>
+        </div>
+    </div>
+
+    <!-- Séparateur vertical -->
+    <div class="nav-separator"></div>
+
+    <!-- Colonne droite : Photocards -->
+    <div class="nav-column">
+        <button class="big-button">
+            Photocards
+        </button>
+        <div class="small-buttons">
+            <button onclick="window.location.href='PC-Laurana.html'">Laurana</button>
+            <button onclick="window.location.href='PC-Andy.html'">Andy</button>
+        </div>
+    </div>
+</nav>
+
+<main id="pc-container">
+    <!-- Les tableaux seront injectés ici -->
+</main>
+
+<script src="./PC-Perso.js"></script>
+</body>
+</html>
