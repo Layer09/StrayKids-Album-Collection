@@ -417,31 +417,6 @@ function tableTotal(title, counters, addColumnTotal = true) {
     s.appendChild(table);
 }
 
-    // === LIGNE TOTAL DES COLONNES ===
-    const totalRow = document.createElement("tr");
-    totalRow.className = "total-row";
-
-    const thTotal = document.createElement("th");
-    thTotal.textContent = "Total";
-    totalRow.appendChild(thTotal);
-
-    for (let i = 0; i < MEMBERS.length; i++) {
-        let sum = 0;
-        counters.forEach(row => {
-            sum += row.values[i];
-        });
-        const td = document.createElement("td");
-        td.textContent = sum;
-        totalRow.appendChild(td);
-    }
-
-    tbody.appendChild(totalRow);
-    table.appendChild(tbody);
-    s.appendChild(table);
-}
-
-
-
 /*************************************************
  * INIT
  *************************************************/
