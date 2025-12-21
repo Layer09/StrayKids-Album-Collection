@@ -1,8 +1,8 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #000; /* fond noir */
-    color: #fff; /* texte par défaut blanc */
+    background-color: #000;
+    color: #fff;
 }
 
 header {
@@ -15,16 +15,13 @@ header {
 .album-title {
     font-size: 28px;
     margin-bottom: 20px;
-
     color: #fff;
     background-color: #1a1a1a; 
     padding: 10px 30px;
     border-radius: 5px;
-
     width: fit-content;
 }
 
-/* conteneur automatique pour le centrage */
 .album-section {
     display: flex;
     flex-direction: column;
@@ -57,18 +54,13 @@ header {
 
 .album-rectangle {
     margin-left: 20px;
-
-    /* hauteur dynamique */
     min-height: 360px;
     height: auto;
-
     width: calc(100% - 350px);
     box-sizing: border-box;
-
     background-color: #2a2a2a;
     border: 3px solid #fff; 
     border-radius: 5px;
-
     display: flex;
     align-items: center;
     padding: 20px;
@@ -104,14 +96,12 @@ header {
     margin-bottom: 5px;
     font-size: 25px;
     text-align: center;
-    color: #fff;
 }
 
 .image-placeholder {
     margin-top: 5px;
     text-align: center;
     font-size: 20px;
-    color: #fff;
 }
 
 #album-counter {
@@ -120,47 +110,150 @@ header {
     color: #ccc;
 }
 
-/* nav */
+/* ----- NAV ----- */
 
 nav {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #353535;
-  width: 100%;
-  padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #353535;
+    width: 100%;
+    padding: 20px 0;
 }
 
-/* Style général des boutons */
 button {
-  margin: 10px;
-  min-width: 130px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  color: #FFFFFF;
-  background-color: #222222;
-  border-radius: 5px;
-  display: inline-block;
+    margin: 10px;
+    min-width: 130px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #fff;
+    background-color: #222;
+    border-radius: 5px;
 }
 
-/* Bouton principal */
 #big-button {
-  font-size: 25px;
-  width: 280px;
-  padding: 15px 20px;
-  margin-bottom: 15px; /* Espace entre le bouton grand et les petits */
+    font-size: 25px;
+    width: 280px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
 }
 
-/* Conteneur des petits boutons */
 #small-buttons {
-  display: flex;
-  justify-content: center;
-  font-size: 20px;
-  gap: 10px; /* Espacement entre les deux petits boutons */
-  padding: 10px;
-  width: 130px;
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    gap: 10px;
+    padding: 10px;
+    width: 130px;
 }
 
+/* ======================================================
+   ========  PHOTOCARDS / TABLEAUX  =====================
+   ====================================================== */
 
+main#pc-container {
+    width: 95%;
+    margin: 40px auto;
+    overflow-x: hidden;
+}
+
+section {
+    margin-bottom: 80px;
+}
+
+/* Titres des sections */
+section h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #1a1a1a;
+    border-left: 5px solid #fff;
+    width: fit-content;
+}
+
+/* ----- TABLEAUX ----- */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* empêche le dépassement */
+    background-color: #111;
+    border: 2px solid #444;
+}
+
+/* Entêtes */
+thead th {
+    background-color: #1f1f1f;
+    border: 1px solid #444;
+    padding: 8px;
+    font-size: 14px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Colonnes membres */
+thead th img.member-icon {
+    display: block;
+    margin: 5px auto 0;
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    filter: grayscale(100%);
+}
+
+/* Lignes */
+tbody th,
+tbody td {
+    border: 1px solid #333;
+    padding: 6px;
+    text-align: center;
+    vertical-align: top;
+    font-size: 14px;
+}
+
+/* Première colonne (labels) */
+tbody th {
+    background-color: #1a1a1a;
+    font-weight: bold;
+    width: 140px;
+}
+
+/* Cellules */
+tbody td {
+    background-color: #0d0d0d;
+    overflow: hidden;
+}
+
+/* Images de photocards */
+.pc-img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin: 2px;
+    border: 1px solid #444;
+    border-radius: 3px;
+}
+
+/* Responsive sécurité */
+@media (max-width: 1000px) {
+    thead th,
+    tbody th,
+    tbody td {
+        font-size: 12px;
+        padding: 4px;
+    }
+
+    .pc-img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 700px) {
+    .pc-img {
+        width: 32px;
+        height: 32px;
+    }
+}
