@@ -494,7 +494,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
     if (hasOfficiel && hasNonOfficiel) {
         tableTotal("Total cumulé", [
             {
-                label: "Total Officiel + Non officiel",
+                label: "Total Officiel + <br> Non officiel",
                 values: offP.map((v, i) => v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i])
             }
         ],
