@@ -159,64 +159,42 @@ main#pc-container {
     overflow-x: hidden;
 }
 
+/* IMPORTANT : affichage VERTICAL */
+#pc-container {
+    display: block; /* corrige le problème Total à droite */
+}
+
+#pc-details,
+#pc-recap {
+    width: 100%;
+}
+
 section {
     margin-bottom: 80px;
-}
-
-/* Titres des sections */
-section h2 {
-    font-size: 26px;
-    margin-bottom: 20px;
-    padding: 10px 20px;
-    background-color: #1a1a1a;
-    border-left: 5px solid #fff;
-    width: fit-content;
-}
-
-/* ======================================================
-   ======== STRUCTURE OFFICIEL / NON OFFICIEL ===========
-   ====================================================== */
-
-#pc-container {
-    display: grid;
-    grid-template-columns: 1fr 2px 1fr;
-    gap: 30px;
-    width: 95%;
-    margin: 40px auto;
-}
-
-.pc-column {
-    display: flex;
-    flex-direction: column;
-    gap: 60px;
-}
-
-.pc-separator-vertical {
-    background-color: #444;
-}
-
-.pc-separator-horizontal {
-    height: 2px;
-    background-color: #444;
-    margin: 40px 0;
 }
 
 /* ======================================================
    =================== TITRES ===========================
    ====================================================== */
 
-.pc-column h2 {
-    font-size: 28px;
-    background-color: #1a1a1a;
-    padding: 10px 20px;
-    border-left: 5px solid #fff;
-    width: fit-content;
+/* Titres de CATÉGORIES */
+.pc-category {
+    text-align: center;
+    font-size: 36px;
+    margin: 70px 0 50px;
+    padding-bottom: 12px;
+    color: #fff;
+    border-bottom: 2px solid #555;
 }
 
-.pc-column h3 {
-    font-size: 22px;
-    margin-bottom: 10px;
-    text-align: center;
+/* Titres des TABLEAUX */
+.pc-table-title {
+    font-size: 26px;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #1a1a1a;
+    border-left: 5px solid #fff;
+    width: fit-content;
 }
 
 /* ======================================================
@@ -286,16 +264,14 @@ tbody th {
    =================== DUOS =============================
    ====================================================== */
 
-.duo-table tbody tr {
-    height: 80px;
-}
-
+/* hauteur identique pour TOUTES les lignes */
+.duo-table tbody tr,
 .duo-table tbody td,
 .duo-table tbody th {
     height: 80px;
 }
 
-/* cases interdites (triangle + diagonale) */
+/* cases interdites (triangle inférieur + diagonale) */
 .duo-disabled {
     background-color: #0a0a0a;
     position: relative;
@@ -322,4 +298,15 @@ tbody th {
 
 .duo-disabled img {
     display: none;
+}
+
+/* ======================================================
+   =================== SÉPARATEURS ======================
+   ====================================================== */
+
+.pc-separator-horizontal {
+    width: 80%;
+    height: 2px;
+    background-color: #444;
+    margin: 70px auto;
 }
