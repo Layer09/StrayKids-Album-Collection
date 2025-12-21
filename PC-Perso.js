@@ -420,70 +420,82 @@ function tableTotal(title, counters) {
  * INIT
  *************************************************/
 
-/* ========= OFFICIEL ========= */
-const soloOff = await loadCSV(`./PC-csv/${prenom}/Solo-off.csv`);
-const bonusOff = await loadCSV(`./PC-csv/${prenom}/Bonus-off.csv`);
-const xxlOff = await loadCSV(`./PC-csv/${prenom}/Solo_XXL-off.csv`);
-const duoOff = await loadCSV(`./PC-csv/${prenom}/Duos-off.csv`);
+(async function init() {
 
-// Vérifier si au moins un tableau a du contenu
-const hasOfficiel =
-    soloHasImages(soloOff) ||
-    soloHasImages(bonusOff) ||
-    soloHasImages(xxlOff) ||
-    duoHasImages(duoOff);
+    // Chargement des CSV
+    const soloOff = await loadCSV(`./PC-csv/${prenom}/Solo-off.csv`);
+    const bonusOff = await loadCSV(`./PC-csv/${prenom}/Bonus-off.csv`);
+    const xxlOff = await loadCSV(`./PC-csv/${prenom}/Solo_XXL-off.csv`);
+    const duoOff = await loadCSV(`./PC-csv/${prenom}/Duos-off.csv`);
 
-if (hasOfficiel) {
-    section(details, "Officiel", true);
+    const soloNon = await loadCSV(`./PC-csv/${prenom}/Solo-non_off.csv`);
+    const duoNon = await loadCSV(`./PC-csv/${prenom}/Duos-non_off.csv`);
 
-    await tablePhotocards(details, soloOff);
-    await tableBonusXXL(details, bonusOff, xxlOff);
-    await tableDuos(details, duoOff, "Duos", true);
+    // Vérifier si au moins un tableau a du contenu
+    const hasOfficiel =
+        soloHasImages(soloOff) ||
+        soloHasImages(bonusOff) ||
+        soloHasImages(xxlOff) ||
+        duoHasImages(duoOff);
 
-    hr(details); // barre seulement si catégorie existe
-}
+    const hasNonOfficiel =
+        soloHasImages(soloNon) ||
+        duoHasImages(duoNon);
 
-/* ========= NON OFFICIEL ========= */
-const soloNon = await loadCSV(`./PC-csv/${prenom}/Solo-non_off.csv`);
-const duoNon = await loadCSV(`./PC-csv/${prenom}/Duos-non_off.csv`);
-
-const hasNonOfficiel =
-    soloHasImages(soloNon) ||
-    duoHasImages(duoNon);
-
-if (hasNonOfficiel) {
-    section(details, "Non officiel", true);
-
-    await tablePhotocards(details, soloNon);
-    await tableDuos(details, duoNon, "Duos", false);
-
-    hr(details);
-}
-
-/* ========= TOTAL ========= */
-// Création uniquement des tables correspondant aux catégories existantes
-section(recap, "Total", true);
-
-if (hasOfficiel) {
-    tableTotal("Total officiel", [
-        { label: "Photocards", values: offP },
-        { label: "Bonus", values: offB },
-        { label: "Grandes images", values: offX },
-        { label: "Duos", values: offD }
-    ]);
-}
-
-if (hasNonOfficiel) {
-    tableTotal("Total non officiel", [
-        { label: "Solos", values: nonP },
-        { label: "Duos", values: nonD }
-    ]);
-}
-
-// Total cumulé toujours présent (au moins une catégorie)
-tableTotal("Total cumulé", [
-    {
-        label: "Total Officiel + Non officiel",
-        values: offP.map((v, i) => v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i])
+    // ========= OFFICIEL =========
+    if (hasOfficiel) {
+        section(details, "Officiel", true);
+        await tablePhotocards(details, soloOff);
+        await tableBonusXXL(details, bonusOff, xxlOff);
+        await tableDuos(details, duoOff, "Duos", true);
+        hr(details);
     }
-]);
+
+    // ========= NON OFFICIEL =========
+    if (hasNonOfficiel) {
+        section(details, "Non officiel", true);
+        await tablePhotocards(details, soloNon);
+        await tableDuos(details, duoNon, "Duos", false);
+        hr(details);
+    }
+
+    // ========= TOTAL =========
+    section(recap, "Total", true);
+
+    const offP = emptyCounter(), offB = emptyCounter(), offX = emptyCounter(), offD = emptyCounter();
+    const nonP = emptyCounter(), nonD = emptyCounter();
+
+    addSoloOfficial(offP, soloOff);
+    addSoloOfficial(offB, bonusOff);
+    addSoloOfficial(offX, xxlOff);
+    addDuos(offD, duoOff);
+
+    addSoloNonOfficial(nonP, soloNon);
+    addDuos(nonD, duoNon);
+
+    if (hasOfficiel) {
+        tableTotal("Total officiel", [
+            { label: "Photocards", values: offP },
+            { label: "Bonus", values: offB },
+            { label: "Grandes images", values: offX },
+            { label: "Duos", values: offD }
+        ]);
+    }
+
+    if (hasNonOfficiel) {
+        tableTotal("Total non officiel", [
+            { label: "Solos", values: nonP },
+            { label: "Duos", values: nonD }
+        ]);
+    }
+
+    // Total cumulé
+    tableTotal("Total cumulé", [
+        {
+            label: "Total Officiel + Non officiel",
+            values: offP.map((v, i) => v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i])
+        }
+    ]);
+
+})();
+
