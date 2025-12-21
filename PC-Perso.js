@@ -96,6 +96,15 @@ function duoHasImages(csv) {
     return false;
 }
 
+async function hasCategoryContent(tables) {
+    for (const t of tables) {
+        const csvs = await t(); // appelle la fonction qui construit le tableau mais retourne si images
+        if (csvs) return true;
+    }
+    return false;
+}
+
+
 /*************************************************
  * ====== TABLEAUX DÉTAILLÉS =====================
  *************************************************/
@@ -411,65 +420,70 @@ function tableTotal(title, counters) {
  * INIT
  *************************************************/
 
-(async function init() {
+/* ========= OFFICIEL ========= */
+const soloOff = await loadCSV(`./PC-csv/${prenom}/Solo-off.csv`);
+const bonusOff = await loadCSV(`./PC-csv/${prenom}/Bonus-off.csv`);
+const xxlOff = await loadCSV(`./PC-csv/${prenom}/Solo_XXL-off.csv`);
+const duoOff = await loadCSV(`./PC-csv/${prenom}/Duos-off.csv`);
 
-    /* ========= OFFICIEL ========= */
+// Vérifier si au moins un tableau a du contenu
+const hasOfficiel =
+    soloHasImages(soloOff) ||
+    soloHasImages(bonusOff) ||
+    soloHasImages(xxlOff) ||
+    duoHasImages(duoOff);
+
+if (hasOfficiel) {
     section(details, "Officiel", true);
-
-    const soloOff = await loadCSV(`./PC-csv/${prenom}/Solo-off.csv`);
-    const bonusOff = await loadCSV(`./PC-csv/${prenom}/Bonus-off.csv`);
-    const xxlOff = await loadCSV(`./PC-csv/${prenom}/Solo_XXL-off.csv`);
-    const duoOff = await loadCSV(`./PC-csv/${prenom}/Duos-off.csv`);
 
     await tablePhotocards(details, soloOff);
     await tableBonusXXL(details, bonusOff, xxlOff);
     await tableDuos(details, duoOff, "Duos", true);
 
-    hr(details);
+    hr(details); // barre seulement si catégorie existe
+}
 
-    /* ========= NON OFFICIEL ========= */
+/* ========= NON OFFICIEL ========= */
+const soloNon = await loadCSV(`./PC-csv/${prenom}/Solo-non_off.csv`);
+const duoNon = await loadCSV(`./PC-csv/${prenom}/Duos-non_off.csv`);
+
+const hasNonOfficiel =
+    soloHasImages(soloNon) ||
+    duoHasImages(duoNon);
+
+if (hasNonOfficiel) {
     section(details, "Non officiel", true);
-
-    const soloNon = await loadCSV(`./PC-csv/${prenom}/Solo-non_off.csv`);
-    const duoNon = await loadCSV(`./PC-csv/${prenom}/Duos-non_off.csv`);
 
     await tablePhotocards(details, soloNon);
     await tableDuos(details, duoNon, "Duos", false);
 
     hr(details);
+}
 
-    /* ========= TOTAL ========= */
-    section(recap, "Total", true);
+/* ========= TOTAL ========= */
+// Création uniquement des tables correspondant aux catégories existantes
+section(recap, "Total", true);
 
-    const offP = emptyCounter(), offB = emptyCounter(), offX = emptyCounter(), offD = emptyCounter();
-    const nonP = emptyCounter(), nonD = emptyCounter();
-    
-    addSoloOfficial(offP, soloOff);
-    addSoloOfficial(offB, bonusOff);
-    addSoloOfficial(offX, xxlOff);
-    addDuos(offD, duoOff);
-    
-    addSoloNonOfficial(nonP, soloNon);
-    addDuos(nonD, duoNon);
-
-
+if (hasOfficiel) {
     tableTotal("Total officiel", [
         { label: "Photocards", values: offP },
         { label: "Bonus", values: offB },
         { label: "Grandes images", values: offX },
         { label: "Duos", values: offD }
     ]);
+}
 
+if (hasNonOfficiel) {
     tableTotal("Total non officiel", [
         { label: "Solos", values: nonP },
         { label: "Duos", values: nonD }
     ]);
+}
 
-    tableTotal("Total cumulé", [
-        {
-            label: "Total Officiel + Non officiel",
-            values: offP.map((v, i) => v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i])
-        }
-    ]);
-
-})();
+// Total cumulé toujours présent (au moins une catégorie)
+tableTotal("Total cumulé", [
+    {
+        label: "Total Officiel + Non officiel",
+        values: offP.map((v, i) => v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i])
+    }
+]);
