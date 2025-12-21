@@ -173,28 +173,98 @@ section h2 {
     width: fit-content;
 }
 
-/* ----- TABLEAUX ----- */
+/* ======================================================
+   ======== STRUCTURE OFFICIEL / NON OFFICIEL ===========
+   ====================================================== */
+
+#pc-container {
+    display: grid;
+    grid-template-columns: 1fr 2px 1fr;
+    gap: 30px;
+    width: 95%;
+    margin: 40px auto;
+}
+
+.pc-column {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}
+
+.pc-separator-vertical {
+    background-color: #444;
+}
+
+.pc-separator-horizontal {
+    height: 2px;
+    background-color: #444;
+    margin: 40px 0;
+}
+
+/* ======================================================
+   =================== TITRES ===========================
+   ====================================================== */
+
+.pc-column h2 {
+    font-size: 28px;
+    background-color: #1a1a1a;
+    padding: 10px 20px;
+    border-left: 5px solid #fff;
+    width: fit-content;
+}
+
+.pc-column h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* ======================================================
+   =================== TABLEAUX =========================
+   ====================================================== */
 
 table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed; /* empêche le dépassement */
+    table-layout: fixed;
     background-color: #111;
     border: 2px solid #444;
 }
 
-/* Entêtes */
-thead th {
-    background-color: #1f1f1f;
-    border: 1px solid #444;
-    padding: 8px;
-    font-size: 14px;
+thead th,
+tbody th,
+tbody td {
+    border: 1px solid #333;
+    padding: 6px;
     text-align: center;
     vertical-align: middle;
+    font-size: 14px;
 }
 
-/* Colonnes membres */
-thead th img.member-icon {
+/* entêtes */
+thead th {
+    background-color: #1f1f1f;
+}
+
+/* première colonne */
+tbody th {
+    background-color: #1a1a1a;
+    font-weight: bold;
+}
+
+/* ligne TOTAL */
+.total-row th,
+.total-row td {
+    background-color: #222;
+    font-weight: bold;
+    border-top: 2px solid #fff;
+}
+
+/* ======================================================
+   =================== IMAGES ===========================
+   ====================================================== */
+
+.member-icon {
     display: block;
     margin: 5px auto 0;
     width: 30px;
@@ -203,30 +273,6 @@ thead th img.member-icon {
     filter: grayscale(100%);
 }
 
-/* Lignes */
-tbody th,
-tbody td {
-    border: 1px solid #333;
-    padding: 6px;
-    text-align: center;
-    vertical-align: top;
-    font-size: 14px;
-}
-
-/* Première colonne (labels) */
-tbody th {
-    background-color: #1a1a1a;
-    font-weight: bold;
-    width: 140px;
-}
-
-/* Cellules */
-tbody td {
-    background-color: #0d0d0d;
-    overflow: hidden;
-}
-
-/* Images de photocards */
 .pc-img {
     width: 50px;
     height: 50px;
@@ -236,51 +282,25 @@ tbody td {
     border-radius: 3px;
 }
 
-/* Responsive sécurité */
-@media (max-width: 1000px) {
-    thead th,
-    tbody th,
-    tbody td {
-        font-size: 12px;
-        padding: 4px;
-    }
+/* ======================================================
+   =================== DUOS =============================
+   ====================================================== */
 
-    .pc-img {
-        width: 40px;
-        height: 40px;
-    }
-}
-
-@media (max-width: 700px) {
-    .pc-img {
-        width: 32px;
-        height: 32px;
-    }
-}
-
-
-/* ===== DUOS : HAUTEUR DE LIGNES UNIFORME ===== */
-
-/* On force une hauteur fixe pour toutes les lignes */
 .duo-table tbody tr {
     height: 80px;
 }
 
-/* Toutes les cellules prennent la hauteur de la ligne */
 .duo-table tbody td,
 .duo-table tbody th {
     height: 80px;
-    vertical-align: middle;
 }
 
-/* ===== CASES INUTILISABLES (triangle inférieur gauche) ===== */
-
+/* cases interdites (triangle + diagonale) */
 .duo-disabled {
     background-color: #0a0a0a;
     position: relative;
 }
 
-/* Effet barré en croix discret */
 .duo-disabled::before,
 .duo-disabled::after {
     content: "";
@@ -300,8 +320,6 @@ tbody td {
     transform: rotate(-45deg);
 }
 
-/* Empêche toute interaction visuelle */
 .duo-disabled img {
     display: none;
 }
-
