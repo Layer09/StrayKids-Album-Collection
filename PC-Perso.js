@@ -15,15 +15,15 @@ const MEMBERS = [
 ];
 
 const MEMBER_IMAGES = [
-    "./images/Unknown.png",
-    "./images/WolfChan.png",
-    "./images/LeeBit.png",
-    "./images/Dwaekki.png",
-    "./images/Jiniret.png",
-    "./images/HanQuokka.png",
-    "./images/Bbokari.png",
-    "./images/PuppyM.png",
-    "./images/FoxINy.png"
+    "./images/skzoo/Unknown.png",
+    "./images/skzoo/WolfChan.png",
+    "./images/skzoo/LeeBit.png",
+    "./images/skzoo/Dwaekki.png",
+    "./images/skzoo/Jiniret.png",
+    "./images/skzoo/HanQuokka.png",
+    "./images/skzoo/Bbokari.png",
+    "./images/skzoo/PuppyM.png",
+    "./images/skzoo/FoxINy.png"
 ];
 
 const LOGO_IMAGE = "./images/Logo.png";
