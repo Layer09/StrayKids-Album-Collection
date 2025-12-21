@@ -356,7 +356,7 @@ function addDuos(counter, csv) {
     }
 }
 
-function tableTotal(title, counters) {
+function tableTotal(title, counters, addColumnTotal = true) {
     const s = section(recap, title);
     const table = document.createElement("table");
 
@@ -390,6 +390,32 @@ function tableTotal(title, counters) {
 
         tbody.appendChild(tr);
     });
+
+    // === LIGNE TOTAL DES COLONNES (optionnelle) ===
+    if (addColumnTotal) {
+        const totalRow = document.createElement("tr");
+        totalRow.className = "total-row";
+
+        const thTotal = document.createElement("th");
+        thTotal.textContent = "Total";
+        totalRow.appendChild(thTotal);
+
+        for (let i = 0; i < MEMBERS.length; i++) {
+            let sum = 0;
+            counters.forEach(row => {
+                sum += row.values[i];
+            });
+            const td = document.createElement("td");
+            td.textContent = sum;
+            totalRow.appendChild(td);
+        }
+
+        tbody.appendChild(totalRow);
+    }
+
+    table.appendChild(tbody);
+    s.appendChild(table);
+}
 
     // === LIGNE TOTAL DES COLONNES ===
     const totalRow = document.createElement("tr");
@@ -494,7 +520,8 @@ function tableTotal(title, counters) {
         tableTotal("Total cumulé", [
             {
                 label: "Total Officiel + Non officiel",
-                values: offP.map((v, i) => v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i])
+                values: offP.map((v, i) => v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i]),
+                false
             }
         ]);
     }
