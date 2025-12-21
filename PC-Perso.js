@@ -62,62 +62,112 @@ function createImg(src, className = "") {
  * SOLOS OFF (classique / XXL / Bonus)
  *************************************************/
 
-async function buildSoloOffTable() {
+/*************************************************
+ * SOLOS OFFICIELS (CLASSIQUES)
+ *************************************************/
+
+async function buildSoloOfficielSimple() {
     const section = createSection("Solos officiels");
-
-    const files = {
-        Photocard: `./PC-csv/${prenom}/Solo-off.csv`,
-        "Grandes images": `./PC-csv/${prenom}/Solo_XXL-off.csv`,
-        Bonus: `./PC-csv/${prenom}/Bonus-off.csv`
-    };
-
-    const data = {};
-    for (const key in files) {
-        data[key] = await loadCSV(files[key]);
-    }
+    const rows = await loadCSV(`./PC-csv/${prenom}/Solo-off.csv`);
 
     const table = document.createElement("table");
 
-    // ENTÊTE
+    /* ===== ENTÊTE ===== */
     const thead = document.createElement("thead");
-    const headRow = document.createElement("tr");
+    const trh = document.createElement("tr");
+
     MEMBERS.forEach((name, i) => {
         const th = document.createElement("th");
         th.textContent = name;
         th.appendChild(createImg(MEMBER_IMAGES[i], "member-icon"));
-        headRow.appendChild(th);
+        trh.appendChild(th);
     });
-    thead.appendChild(headRow);
+
+    thead.appendChild(trh);
     table.appendChild(thead);
 
-    // CORPS
+    /* ===== LIGNE UNIQUE ===== */
+    const tbody = document.createElement("tbody");
+    const tr = document.createElement("tr");
+
+    MEMBERS.forEach((_, memberIndex) => {
+        const td = document.createElement("td");
+
+        for (let i = 1; i < rows.length; i++) {
+            const albumImg = rows[i][1];
+            const value = parseInt(rows[i][memberIndex + 2], 10);
+
+            for (let n = 0; n < value; n++) {
+                td.appendChild(createImg(albumImg, "pc-img"));
+            }
+        }
+
+        tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
+    table.appendChild(tbody);
+    section.appendChild(table);
+}
+
+/*************************************************
+ * BONUS & GRANDES IMAGES OFFICIELS
+ *************************************************/
+
+async function buildBonusXXLOfficiel() {
+    const section = createSection("Bonus et Grandes images officiels");
+
+    const bonus = await loadCSV(`./PC-csv/${prenom}/Bonus-off.csv`);
+    const xxl = await loadCSV(`./PC-csv/${prenom}/Solo_XXL-off.csv`);
+
+    const table = document.createElement("table");
+
+    /* ===== ENTÊTE ===== */
+    const thead = document.createElement("thead");
+    const trh = document.createElement("tr");
+
+    trh.appendChild(document.createElement("th")); // colonne vide
+
+    MEMBERS.forEach((name, i) => {
+        const th = document.createElement("th");
+        th.textContent = name;
+        th.appendChild(createImg(MEMBER_IMAGES[i], "member-icon"));
+        trh.appendChild(th);
+    });
+
+    thead.appendChild(trh);
+    table.appendChild(thead);
+
+    /* ===== CORPS ===== */
     const tbody = document.createElement("tbody");
 
-    for (const type in data) {
-        const rows = data[type];
-        const header = rows[0];
-
+    [
+        { label: "Bonus", data: bonus },
+        { label: "Grandes images", data: xxl }
+    ].forEach(block => {
         const tr = document.createElement("tr");
-        const label = document.createElement("td");
-        label.textContent = type;
-        tr.appendChild(label);
+
+        const th = document.createElement("th");
+        th.textContent = block.label;
+        tr.appendChild(th);
 
         MEMBERS.forEach((_, memberIndex) => {
             const td = document.createElement("td");
 
-            for (let i = 1; i < rows.length; i++) {
-                const albumPath = rows[i][1];
-                const value = parseInt(rows[i][memberIndex + 2], 10);
+            for (let i = 1; i < block.data.length; i++) {
+                const img = block.data[i][1];
+                const value = parseInt(block.data[i][memberIndex + 2], 10);
 
                 for (let n = 0; n < value; n++) {
-                    td.appendChild(createImg(albumPath, "pc-img"));
+                    td.appendChild(createImg(img, "pc-img"));
                 }
             }
+
             tr.appendChild(td);
         });
 
         tbody.appendChild(tr);
-    }
+    });
 
     table.appendChild(tbody);
     section.appendChild(table);
@@ -139,6 +189,8 @@ async function buildDuosTable(isOff) {
     const header = rows[0];
 
     const table = document.createElement("table");
+    table.classList.add("duo-table");
+
 
     // ENTÊTE
     const thead = document.createElement("thead");
@@ -166,6 +218,10 @@ async function buildDuosTable(isOff) {
 
         MEMBERS.forEach((_, colIndex) => {
             const td = document.createElement("td");
+            
+            if (colIndex < rowIndex) {
+                td.classList.add("duo-disabled");
+            }
 
             if (colIndex > rowIndex) {
                 const duoCode = `${rowIndex}${colIndex}`;
@@ -237,7 +293,8 @@ async function buildSoloNonOff() {
  *************************************************/
 
 (async function init() {
-    await buildSoloOffTable();
+    await buildSoloOfficielSimple();
+    await buildBonusXXLOfficiel();
     await buildDuosTable(true);
     await buildDuosTable(false);
     await buildSoloNonOff();
