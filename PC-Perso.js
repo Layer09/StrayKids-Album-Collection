@@ -123,14 +123,20 @@ async function tablePhotocards(parent, csv) {
     const tbody = document.createElement("tbody");
     const tr = document.createElement("tr");
 
+    // --- Déterminer si le CSV est officiel ---
+    const offset = csv[0].includes("Nom Album") && csv[0].includes("Chemin Album") ? 2 : 0;
+    const useAlbumImage = offset === 2; // vrai pour les officiels
+
     MEMBERS.forEach((_, c) => {
         const td = document.createElement("td");
+
         for (let r = 1; r < csv.length; r++) {
-            const n = parseInt(csv[r][c + 2], 10);
+            const n = parseInt(csv[r][c + offset], 10) || 0;
             for (let i = 0; i < n; i++) {
-                td.appendChild(img(csv[r][1], "pc-img"));
+                td.appendChild(img(useAlbumImage ? csv[r][1] : LOGO_IMAGE, "pc-img"));
             }
         }
+
         tr.appendChild(td);
     });
 
@@ -233,8 +239,10 @@ async function tableDuos(parent, csv, title, isOff) {
                 const idx = header.indexOf(`${r}${c}`);
                 if (idx !== -1) {
                     for (let i = 1; i < csv.length; i++) {
-                        const n = parseInt(csv[i][idx], 10);
-                        for (let k = 0; k < n; k++) {
+                        // Utiliser parseInt avec fallback 0
+                        const val = parseInt(csv[i][idx], 10) || 0;
+                
+                        for (let k = 0; k < val; k++) {
                             td.appendChild(
                                 img(isOff ? csv[i][1] : LOGO_IMAGE, "pc-img")
                             );
