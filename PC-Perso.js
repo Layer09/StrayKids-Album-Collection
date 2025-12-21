@@ -261,14 +261,19 @@ function emptyCounter() {
 }
 
 function addSolo(counter, csv) {
+    if (!csv || csv.length < 2) return;
+
+    // Vérifier si le CSV a des colonnes "Nom Album" et "Chemin Album"
+    const offset = csv[0].includes("Nom Album") && csv[0].includes("Chemin Album") ? 2 : 0;
+
     for (let r = 1; r < csv.length; r++) {
         for (let c = 0; c < MEMBERS.length; c++) {
-            // Utiliser csv[r][c+2] si c+2 existe, sinon csv[r][c]
-            const val = parseInt(csv[r][c + 2] ?? csv[r][c], 10);
-            counter[c] += val || 0;
+            const val = parseInt(csv[r][c + offset], 10) || 0;
+            counter[c] += val;
         }
     }
 }
+
 
 function addDuos(counter, csv) {
     const h = csv[0];
