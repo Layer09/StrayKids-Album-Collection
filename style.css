@@ -257,3 +257,51 @@ tbody td {
         height: 32px;
     }
 }
+
+
+/* ===== DUOS : HAUTEUR DE LIGNES UNIFORME ===== */
+
+/* On force une hauteur fixe pour toutes les lignes */
+.duo-table tbody tr {
+    height: 80px;
+}
+
+/* Toutes les cellules prennent la hauteur de la ligne */
+.duo-table tbody td,
+.duo-table tbody th {
+    height: 80px;
+    vertical-align: middle;
+}
+
+/* ===== CASES INUTILISABLES (triangle inférieur gauche) ===== */
+
+.duo-disabled {
+    background-color: #0a0a0a;
+    position: relative;
+}
+
+/* Effet barré en croix discret */
+.duo-disabled::before,
+.duo-disabled::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    width: 80%;
+    height: 1px;
+    background-color: #333;
+}
+
+.duo-disabled::before {
+    transform: rotate(45deg);
+}
+
+.duo-disabled::after {
+    transform: rotate(-45deg);
+}
+
+/* Empêche toute interaction visuelle */
+.duo-disabled img {
+    display: none;
+}
+
