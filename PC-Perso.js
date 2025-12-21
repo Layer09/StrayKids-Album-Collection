@@ -17,10 +17,9 @@ const MEMBERS = [
 const MEMBER_IMAGES = MEMBERS.map((_, i) => `./images/${i + 1}.jpg`);
 const LOGO_IMAGE = "./images/Logo.png";
 
-const detailsContainer = document.getElementById("pc-details");
-const recapContainer = document.getElementById("pc-recap");
+const details = document.getElementById("pc-details");
+const recap = document.getElementById("pc-recap");
 
-// prénom auto
 const prenom = location.pathname
     .split("/")
     .pop()
@@ -28,7 +27,7 @@ const prenom = location.pathname
     .replace(".html", "");
 
 /*************************************************
- * OUTILS CSV
+ * CSV
  *************************************************/
 
 async function loadCSV(path) {
@@ -38,33 +37,62 @@ async function loadCSV(path) {
 }
 
 /*************************************************
- * OUTILS HTML
+ * OUTILS
  *************************************************/
 
-function createImg(src, cls = "") {
-    const img = document.createElement("img");
-    img.src = src;
-    if (cls) img.className = cls;
-    return img;
+function img(src, cls = "") {
+    const i = document.createElement("img");
+    i.src = src;
+    if (cls) i.className = cls;
+    return i;
 }
 
-function createSection(container, title) {
-    const section = document.createElement("section");
-    const h2 = document.createElement("h2");
-    h2.textContent = title;
-    section.appendChild(h2);
-    container.appendChild(section);
-    return section;
+function section(container, title) {
+    const s = document.createElement("section");
+    const h = document.createElement("h2");
+    h.textContent = title;
+    s.appendChild(h);
+    container.appendChild(s);
+    return s;
+}
+
+function hr(container) {
+    const d = document.createElement("div");
+    d.className = "pc-separator-horizontal";
+    container.appendChild(d);
 }
 
 /*************************************************
- * ====== PARTIE 1 : TABLEAUX VISUELS (DETAILS) ===
+ * VÉRIFICATIONS (images présentes ?)
  *************************************************/
 
-/* Photocards officiels */
-async function buildPhotocardsOff() {
-    const section = createSection(detailsContainer, "Photocards");
-    const rows = await loadCSV(`./PC-csv/${prenom}/Solo-off.csv`);
+function soloHasImages(csv) {
+    for (let r = 1; r < csv.length; r++) {
+        for (let c = 2; c < csv[r].length; c++) {
+            if (parseInt(csv[r][c], 10) > 0) return true;
+        }
+    }
+    return false;
+}
+
+function duoHasImages(csv) {
+    for (let r = 1; r < csv.length; r++) {
+        for (let c = 2; c < csv[r].length; c++) {
+            if (parseInt(csv[r][c], 10) > 0) return true;
+        }
+    }
+    return false;
+}
+
+/*************************************************
+ * ====== TABLEAUX DÉTAILLÉS =====================
+ *************************************************/
+
+/* Photocards */
+async function tablePhotocards(parent, csv) {
+    if (!soloHasImages(csv)) return;
+
+    const s = section(parent, "Photocards");
     const table = document.createElement("table");
 
     const thead = document.createElement("thead");
@@ -73,7 +101,7 @@ async function buildPhotocardsOff() {
     MEMBERS.forEach((m, i) => {
         const th = document.createElement("th");
         th.textContent = m;
-        th.appendChild(createImg(MEMBER_IMAGES[i], "member-icon"));
+        th.appendChild(img(MEMBER_IMAGES[i], "member-icon"));
         trh.appendChild(th);
     });
 
@@ -85,10 +113,10 @@ async function buildPhotocardsOff() {
 
     MEMBERS.forEach((_, c) => {
         const td = document.createElement("td");
-        for (let r = 1; r < rows.length; r++) {
-            const n = parseInt(rows[r][c + 2], 10);
+        for (let r = 1; r < csv.length; r++) {
+            const n = parseInt(csv[r][c + 2], 10);
             for (let i = 0; i < n; i++) {
-                td.appendChild(createImg(rows[r][1], "pc-img"));
+                td.appendChild(img(csv[r][1], "pc-img"));
             }
         }
         tr.appendChild(td);
@@ -96,17 +124,16 @@ async function buildPhotocardsOff() {
 
     tbody.appendChild(tr);
     table.appendChild(tbody);
-    section.appendChild(table);
+    s.appendChild(table);
 }
 
 /* Bonus + XXL */
-async function buildBonusXXL() {
-    const section = createSection(detailsContainer, "Bonus et Grandes images officiels");
+async function tableBonusXXL(parent, bonus, xxl) {
+    if (!soloHasImages(bonus) && !soloHasImages(xxl)) return;
 
-    const bonus = await loadCSV(`./PC-csv/${prenom}/Bonus-off.csv`);
-    const xxl = await loadCSV(`./PC-csv/${prenom}/Solo_XXL-off.csv`);
-
+    const s = section(parent, "Bonus et grandes images");
     const table = document.createElement("table");
+
     const thead = document.createElement("thead");
     const trh = document.createElement("tr");
     trh.appendChild(document.createElement("th"));
@@ -114,7 +141,7 @@ async function buildBonusXXL() {
     MEMBERS.forEach((m, i) => {
         const th = document.createElement("th");
         th.textContent = m;
-        th.appendChild(createImg(MEMBER_IMAGES[i], "member-icon"));
+        th.appendChild(img(MEMBER_IMAGES[i], "member-icon"));
         trh.appendChild(th);
     });
 
@@ -126,18 +153,20 @@ async function buildBonusXXL() {
     [
         { label: "Bonus", data: bonus },
         { label: "Grandes images", data: xxl }
-    ].forEach(block => {
+    ].forEach(b => {
+        if (!soloHasImages(b.data)) return;
+
         const tr = document.createElement("tr");
         const th = document.createElement("th");
-        th.textContent = block.label;
+        th.textContent = b.label;
         tr.appendChild(th);
 
         MEMBERS.forEach((_, c) => {
             const td = document.createElement("td");
-            for (let r = 1; r < block.data.length; r++) {
-                const n = parseInt(block.data[r][c + 2], 10);
+            for (let r = 1; r < b.data.length; r++) {
+                const n = parseInt(b.data[r][c + 2], 10);
                 for (let i = 0; i < n; i++) {
-                    td.appendChild(createImg(block.data[r][1], "pc-img"));
+                    td.appendChild(img(b.data[r][1], "pc-img"));
                 }
             }
             tr.appendChild(td);
@@ -147,23 +176,18 @@ async function buildBonusXXL() {
     });
 
     table.appendChild(tbody);
-    section.appendChild(table);
+    s.appendChild(table);
 }
 
-/* Duos visuels */
-async function buildDuos(isOff) {
-    const section = createSection(
-        detailsContainer,
-        isOff ? "Duos officiels" : "Duos non officiels"
-    );
+/* Duos */
+async function tableDuos(parent, csv, title, isOff) {
+    if (!duoHasImages(csv)) return;
 
-    const rows = await loadCSV(
-        `./PC-csv/${prenom}/${isOff ? "Duos-off.csv" : "Duos-non_off.csv"}`
-    );
-
-    const header = rows[0];
+    const s = section(parent, title);
     const table = document.createElement("table");
     table.classList.add("duo-table");
+
+    const header = csv[0];
 
     const thead = document.createElement("thead");
     const trh = document.createElement("tr");
@@ -172,7 +196,7 @@ async function buildDuos(isOff) {
     MEMBERS.forEach((m, i) => {
         const th = document.createElement("th");
         th.textContent = m;
-        th.appendChild(createImg(MEMBER_IMAGES[i], "member-icon"));
+        th.appendChild(img(MEMBER_IMAGES[i], "member-icon"));
         trh.appendChild(th);
     });
 
@@ -185,7 +209,7 @@ async function buildDuos(isOff) {
         const tr = document.createElement("tr");
         const th = document.createElement("th");
         th.textContent = m;
-        th.appendChild(createImg(MEMBER_IMAGES[r], "member-icon"));
+        th.appendChild(img(MEMBER_IMAGES[r], "member-icon"));
         tr.appendChild(th);
 
         MEMBERS.forEach((_, c) => {
@@ -196,10 +220,12 @@ async function buildDuos(isOff) {
             } else {
                 const idx = header.indexOf(`${r}${c}`);
                 if (idx !== -1) {
-                    for (let i = 1; i < rows.length; i++) {
-                        const n = parseInt(rows[i][idx], 10);
+                    for (let i = 1; i < csv.length; i++) {
+                        const n = parseInt(csv[i][idx], 10);
                         for (let k = 0; k < n; k++) {
-                            td.appendChild(createImg(isOff ? rows[i][1] : LOGO_IMAGE, "pc-img"));
+                            td.appendChild(
+                                img(isOff ? csv[i][1] : LOGO_IMAGE, "pc-img")
+                            );
                         }
                     }
                 }
@@ -211,11 +237,11 @@ async function buildDuos(isOff) {
     });
 
     table.appendChild(tbody);
-    section.appendChild(table);
+    s.appendChild(table);
 }
 
 /*************************************************
- * ====== PARTIE 2 : TABLEAUX RECAP ============
+ * ====== TOTALS ================================
  *************************************************/
 
 function emptyCounter() {
@@ -242,10 +268,8 @@ function addDuos(counter, csv) {
     }
 }
 
-function buildRecap(title, rows) {
-    if (rows.every(r => r.values.every(v => v === 0))) return null;
-
-    const section = createSection(recapContainer, title);
+function tableTotal(title, counters) {
+    const s = section(recap, title);
     const table = document.createElement("table");
 
     const thead = document.createElement("thead");
@@ -255,7 +279,7 @@ function buildRecap(title, rows) {
     MEMBERS.forEach((m, i) => {
         const th = document.createElement("th");
         th.textContent = m;
-        th.appendChild(createImg(MEMBER_IMAGES[i], "member-icon"));
+        th.appendChild(img(MEMBER_IMAGES[i], "member-icon"));
         trh.appendChild(th);
     });
 
@@ -263,119 +287,89 @@ function buildRecap(title, rows) {
     table.appendChild(thead);
 
     const tbody = document.createElement("tbody");
-    const totals = emptyCounter();
 
-    rows.forEach(row => {
+    counters.forEach(row => {
         const tr = document.createElement("tr");
         const th = document.createElement("th");
         th.textContent = row.label;
         tr.appendChild(th);
 
         row.values.forEach((v, i) => {
-            totals[i] += v;
             const td = document.createElement("td");
             td.textContent = v;
+            td.appendChild(img(MEMBER_IMAGES[i], "member-icon"));
             tr.appendChild(td);
         });
 
         tbody.appendChild(tr);
     });
 
-    const trT = document.createElement("tr");
-    trT.classList.add("total-row");
-    const thT = document.createElement("th");
-    thT.textContent = "Total";
-    trT.appendChild(thT);
-
-    totals.forEach((v, i) => {
-        const td = document.createElement("td");
-        td.textContent = v;
-        td.appendChild(createImg(MEMBER_IMAGES[i], "member-icon"));
-        trT.appendChild(td);
-    });
-
-    tbody.appendChild(trT);
     table.appendChild(tbody);
-    section.appendChild(table);
-
-    return totals;
+    s.appendChild(table);
 }
 
 /*************************************************
- * LANCEMENT
+ * INIT
  *************************************************/
 
 (async function init() {
 
-    /* ===== DETAILS ===== */
-    await buildPhotocardsOff();
-    await buildBonusXXL();
-    await buildDuos(true);
-    await buildDuos(false);
+    /* ========= OFFICIEL ========= */
+    section(details, "Officiel");
 
-    /* ===== RECAP ===== */
-    const offP = emptyCounter();
-    const offB = emptyCounter();
-    const offX = emptyCounter();
-    const offD = emptyCounter();
+    const soloOff = await loadCSV(`./PC-csv/${prenom}/Solo-off.csv`);
+    const bonusOff = await loadCSV(`./PC-csv/${prenom}/Bonus-off.csv`);
+    const xxlOff = await loadCSV(`./PC-csv/${prenom}/Solo_XXL-off.csv`);
+    const duoOff = await loadCSV(`./PC-csv/${prenom}/Duos-off.csv`);
 
-    addSolo(offP, await loadCSV(`./PC-csv/${prenom}/Solo-off.csv`));
-    addSolo(offB, await loadCSV(`./PC-csv/${prenom}/Bonus-off.csv`));
-    addSolo(offX, await loadCSV(`./PC-csv/${prenom}/Solo_XXL-off.csv`));
-    addDuos(offD, await loadCSV(`./PC-csv/${prenom}/Duos-off.csv`));
+    await tablePhotocards(details, soloOff);
+    await tableBonusXXL(details, bonusOff, xxlOff);
+    await tableDuos(details, duoOff, "Duos", true);
 
-    const totalOff = buildRecap("Officiel", [
+    hr(details);
+
+    /* ========= NON OFFICIEL ========= */
+    section(details, "Non officiel");
+
+    const soloNon = await loadCSV(`./PC-csv/${prenom}/Solo-non_off.csv`);
+    const duoNon = await loadCSV(`./PC-csv/${prenom}/Duos-non_off.csv`);
+
+    await tablePhotocards(details, soloNon);
+    await tableDuos(details, duoNon, "Duos", false);
+
+    hr(details);
+
+    /* ========= TOTAL ========= */
+    section(recap, "Total");
+
+    const offP = emptyCounter(), offB = emptyCounter(), offX = emptyCounter(), offD = emptyCounter();
+    const nonP = emptyCounter(), nonD = emptyCounter();
+
+    addSolo(offP, soloOff);
+    addSolo(offB, bonusOff);
+    addSolo(offX, xxlOff);
+    addDuos(offD, duoOff);
+
+    addSolo(nonP, soloNon);
+    addDuos(nonD, duoNon);
+
+    tableTotal("Total officiel", [
         { label: "Photocards", values: offP },
         { label: "Bonus", values: offB },
         { label: "Grandes images", values: offX },
         { label: "Duos", values: offD }
     ]);
 
-    const nonP = emptyCounter();
-    const nonD = emptyCounter();
-
-    addSolo(nonP, await loadCSV(`./PC-csv/${prenom}/Solo-non_off.csv`));
-    addDuos(nonD, await loadCSV(`./PC-csv/${prenom}/Duos-non_off.csv`));
-
-    const totalNon = buildRecap("Non officiel", [
+    tableTotal("Total non officiel", [
         { label: "Photocards", values: nonP },
         { label: "Duos", values: nonD }
     ]);
 
-    if (totalOff && totalNon) {
-        const section = createSection(recapContainer, "Total cumulé");
-        const table = document.createElement("table");
-
-        const thead = document.createElement("thead");
-        const trh = document.createElement("tr");
-        trh.appendChild(document.createElement("th"));
-
-        MEMBERS.forEach((m, i) => {
-            const th = document.createElement("th");
-            th.textContent = m;
-            th.appendChild(createImg(MEMBER_IMAGES[i], "member-icon"));
-            trh.appendChild(th);
-        });
-
-        thead.appendChild(trh);
-        table.appendChild(thead);
-
-        const tbody = document.createElement("tbody");
-        const tr = document.createElement("tr");
-        const th = document.createElement("th");
-        th.textContent = "Total";
-        tr.appendChild(th);
-
-        totalOff.forEach((v, i) => {
-            const td = document.createElement("td");
-            td.textContent = v + totalNon[i];
-            td.appendChild(createImg(MEMBER_IMAGES[i], "member-icon"));
-            tr.appendChild(td);
-        });
-
-        tbody.appendChild(tr);
-        table.appendChild(tbody);
-        section.appendChild(table);
-    }
+    tableTotal("Total cumulé", [
+        {
+            label: "Total",
+            values: offP.map((v, i) => v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i])
+        }
+    ]);
 
 })();
