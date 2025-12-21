@@ -199,7 +199,18 @@ async function tableBonusXXL(parent, bonus, xxl) {
 
 /* Duos */
 async function tableDuos(parent, csv, title, isOff) {
-    if (!duoHasImages(csv)) return;
+    // Vérification si tableau vide
+    let hasImage = false;
+    for (let r = 1; r < csv.length; r++) {
+        for (let c = 2; c < csv[r].length; c++) {
+            if (parseInt(csv[r][c], 10) > 0) {
+                hasImage = true;
+                break;
+            }
+        }
+        if (hasImage) break;
+    }
+    if (!hasImage) return;
 
     const s = section(parent, title);
     const table = document.createElement("table");
@@ -207,54 +218,89 @@ async function tableDuos(parent, csv, title, isOff) {
 
     const header = csv[0];
 
+    // Membres affichés dans les colonnes (supprimer Woojin)
+    const colMembers = MEMBERS.slice(1); // indice 1 → 8 (Bang Chan → I.N)
+    // Membres affichés dans les lignes (supprimer I.N)
+    const rowMembers = MEMBERS.slice(0, MEMBERS.length - 1); // indice 0 → 7 (Woojin → Seungmin)
+
+    // === ENTÊTE ===
     const thead = document.createElement("thead");
     const trh = document.createElement("tr");
-    trh.appendChild(document.createElement("th"));
+    trh.appendChild(document.createElement("th")); // coin supérieur gauche vide
 
-    MEMBERS.forEach((m, i) => {
+    colMembers.forEach((m, i) => {
         const th = document.createElement("th");
         th.textContent = m;
-        th.appendChild(img(MEMBER_IMAGES[i], "member-icon"));
+        th.appendChild(img(MEMBER_IMAGES[i + 1], "member-icon")); // +1 car on a supprimé Woojin
         trh.appendChild(th);
     });
+
+    // Dernière colonne vide pour aligner avec rappel des lignes
+    const thLast = document.createElement("th");
+    trh.appendChild(thLast);
 
     thead.appendChild(trh);
     table.appendChild(thead);
 
+    // === CORPS ===
     const tbody = document.createElement("tbody");
 
-    MEMBERS.forEach((m, r) => {
+    rowMembers.forEach((m, r) => {
         const tr = document.createElement("tr");
+
+        // Première colonne = nom + icône de la ligne
         const th = document.createElement("th");
         th.textContent = m;
         th.appendChild(img(MEMBER_IMAGES[r], "member-icon"));
         tr.appendChild(th);
 
-        MEMBERS.forEach((_, c) => {
+        colMembers.forEach((_, c) => {
             const td = document.createElement("td");
 
-            if (c <= r) {
-                td.classList.add("duo-disabled");
-            } else {
-                const idx = header.indexOf(`${r}${c}`);
-                if (idx !== -1) {
+            // Calcul de la vraie colonne dans le CSV (décalage Woojin)
+            const csvCol = c + 2; // +2 car colonnes Nom Album + Chemin Album
+            const csvRow = r + 1; // +1 car en-tête
+
+            // Partie triangle + diagonale barrée
+            if (c < r) td.classList.add("duo-disabled");
+
+            // Ajout des images
+            if (!td.classList.contains("duo-disabled")) {
+                const duoCode = `${r}${c + 1}`; // décalage colonne +1 pour correspondre à l'indice réel dans CSV
+                const duoIndex = header.indexOf(duoCode);
+                if (duoIndex !== -1) {
                     for (let i = 1; i < csv.length; i++) {
-                        // Utiliser parseInt avec fallback 0
-                        const val = parseInt(csv[i][idx], 10) || 0;
-                
-                        for (let k = 0; k < val; k++) {
-                            td.appendChild(
-                                img(isOff ? csv[i][1] : LOGO_IMAGE, "pc-img")
-                            );
+                        const value = parseInt(csv[i][duoIndex], 10) || 0;
+                        for (let n = 0; n < value; n++) {
+                            td.appendChild(img(isOff ? csv[i][1] : LOGO_IMAGE, "pc-img"));
                         }
                     }
                 }
             }
+
             tr.appendChild(td);
         });
 
+        // Dernière colonne = rappel de la ligne
+        const tdLast = document.createElement("td");
+        tdLast.textContent = m;
+        tdLast.appendChild(img(MEMBER_IMAGES[r], "member-icon"));
+        tr.appendChild(tdLast);
+
         tbody.appendChild(tr);
     });
+
+    // === Ligne finale = rappel entêtes ===
+    const trFooter = document.createElement("tr");
+    trFooter.appendChild(document.createElement("th")); // coin vide
+    colMembers.forEach((m, i) => {
+        const td = document.createElement("td");
+        td.textContent = m;
+        td.appendChild(img(MEMBER_IMAGES[i + 1], "member-icon"));
+        trFooter.appendChild(td);
+    });
+    trFooter.appendChild(document.createElement("td")); // coin bas droit vide
+    tbody.appendChild(trFooter);
 
     table.appendChild(tbody);
     s.appendChild(table);
