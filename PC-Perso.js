@@ -262,8 +262,10 @@ function emptyCounter() {
 
 function addSolo(counter, csv) {
     for (let r = 1; r < csv.length; r++) {
-        for (let c = 0; c < 9; c++) {
-            counter[c] += parseInt(csv[r][c + 2], 10);
+        for (let c = 0; c < MEMBERS.length; c++) {
+            // Utiliser csv[r][c+2] si c+2 existe, sinon csv[r][c]
+            const val = parseInt(csv[r][c + 2] ?? csv[r][c], 10);
+            counter[c] += val || 0;
         }
     }
 }
@@ -309,7 +311,6 @@ function tableTotal(title, counters) {
         row.values.forEach((v, i) => {
             const td = document.createElement("td");
             td.textContent = v;
-            td.appendChild(img(MEMBER_IMAGES[i], "member-icon"));
             tr.appendChild(td);
         });
 
