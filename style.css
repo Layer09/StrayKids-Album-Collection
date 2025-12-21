@@ -237,6 +237,19 @@ tbody th {
     border-top: 2px solid #fff;
 }
 
+/* Cases de rappel dans les tableaux duos */
+.duo-table tbody tr td:last-child,
+.duo-table tbody tr th:first-child,
+.duo-table tbody tr:last-child td {
+    background-color: #1f1f1f; /* même couleur que l'entête */
+}
+
+/* Coin bas droit (dernier td de la dernière ligne) */
+.duo-table tbody tr:last-child td:last-child {
+    background-color: #1f1f1f;
+}
+
+
 /* ======================================================
    =================== IMAGES ===========================
    ====================================================== */
