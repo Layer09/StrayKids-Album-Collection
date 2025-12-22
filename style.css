@@ -64,6 +64,7 @@ header {
     display: flex;
     align-items: center;
     padding: 20px;
+    justify-content: center;
 }
 
 /* ----- IMAGES A & B ----- */
@@ -72,6 +73,7 @@ header {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .album-image-block {
