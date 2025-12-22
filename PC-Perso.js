@@ -156,11 +156,13 @@ async function tablePhotocards(parent, csv) {
 
 /* Bonus + XXL */
 async function tableBonusXXL(parent, bonus, xxl) {
+    // Si vraiment aucun contenu du tout
     if (!soloHasImages(bonus) && !soloHasImages(xxl)) return;
 
     const s = section(parent, "Bonus et grandes images");
     const table = document.createElement("table");
 
+    /* ===== THEAD ===== */
     const thead = document.createElement("thead");
     const trh = document.createElement("tr");
     trh.appendChild(document.createElement("th"));
@@ -175,13 +177,16 @@ async function tableBonusXXL(parent, bonus, xxl) {
     thead.appendChild(trh);
     table.appendChild(thead);
 
+    /* ===== TBODY ===== */
     const tbody = document.createElement("tbody");
 
     [
         { label: "Bonus", data: bonus },
         { label: "Grandes images", data: xxl }
     ].forEach(b => {
-    if (b.label !== "Bonus" && !soloHasImages(b.data)) return;
+
+        // ⚠️ Ne jamais bloquer Bonus
+        if (b.label !== "Bonus" && !soloHasImages(b.data)) return;
 
         const tr = document.createElement("tr");
         const th = document.createElement("th");
@@ -190,33 +195,45 @@ async function tableBonusXXL(parent, bonus, xxl) {
 
         MEMBERS.forEach((_, c) => {
             const td = document.createElement("td");
+
             for (let r = 1; r < b.data.length; r++) {
-                const value = b.data[r][c + 2];
-                if (!value || value === "0") continue;
-            
-                // Nettoyage des parenthèses
-                const clean = value.replace(/^\(|\)$/g, "");
-            
-                // Une ou plusieurs récompenses
-                const rewards = clean.includes("|")
-                    ? clean.split("|").map(v => v.trim())
-                    : [clean];
-            
-                rewards.forEach(reward => {
-                    const wrapper = document.createElement("div");
-                    wrapper.className = "bonus-item";
-            
-                    // Image d’album
-                    wrapper.appendChild(img(b.data[r][1], "pc-img"));
-            
-                    // Texte de la récompense
-                    const label = document.createElement("div");
-                    label.className = "bonus-label";
-                    label.textContent = reward;
-            
-                    wrapper.appendChild(label);
-                    td.appendChild(wrapper);
-                });
+
+                /* ===== BONUS ===== */
+                if (b.label === "Bonus") {
+                    const value = b.data[r][c + 2];
+                    if (!value || value === "0") continue;
+
+                    const clean = value.replace(/^\(|\)$/g, "");
+                    const rewards = clean.includes("|")
+                        ? clean.split("|").map(v => v.trim())
+                        : [clean];
+
+                    rewards.forEach(reward => {
+                        const wrapper = document.createElement("div");
+                        wrapper.className = "bonus-item";
+
+                        // Image d’album (inchangée)
+                        wrapper.appendChild(img(b.data[r][1], "pc-img"));
+
+                        // Texte du bonus
+                        const label = document.createElement("div");
+                        label.className = "bonus-label";
+                        label.textContent = reward;
+
+                        wrapper.appendChild(label);
+                        td.appendChild(wrapper);
+                    });
+                }
+
+                /* ===== GRANDES IMAGES (INCHANGÉ) ===== */
+                else {
+                    const n = parseInt(b.data[r][c + 2], 10);
+                    if (!n || isNaN(n)) continue;
+
+                    for (let i = 0; i < n; i++) {
+                        td.appendChild(img(b.data[r][1], "pc-img"));
+                    }
+                }
             }
 
             tr.appendChild(td);
