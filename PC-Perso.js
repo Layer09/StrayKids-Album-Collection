@@ -181,7 +181,7 @@ async function tableBonusXXL(parent, bonus, xxl) {
         { label: "Bonus", data: bonus },
         { label: "Grandes images", data: xxl }
     ].forEach(b => {
-        if (!soloHasImages(b.data)) return;
+    if (b.label !== "Bonus" && !soloHasImages(b.data)) return;
 
         const tr = document.createElement("tr");
         const th = document.createElement("th");
