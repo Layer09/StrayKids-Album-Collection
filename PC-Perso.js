@@ -530,6 +530,12 @@ function tableTotal(title, counters, addColumnTotal = true) {
     const duoNon = await loadCSV(`./PC-csv/${prenom}/Duos-non_off.csv`);
     const groupeNon = await loadCSV(`./PC-csv/${prenom}/Groupe-non_off.csv`);
 
+    if (groupeNon && groupeNon.length > 0) {
+        const raw = groupeNon.flat().find(v => v.trim() !== "");
+        nonG = parseInt(raw, 10) || 0;
+    }
+
+
     // Vérifier si au moins un tableau a du contenu
     const hasOfficiel =
         soloHasImages(soloOff) ||
@@ -563,7 +569,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
     section(recap, "Total", true);
 
     const offP = emptyCounter(), offB = emptyCounter(), offX = emptyCounter(), offD = emptyCounter();
-    const nonP = emptyCounter(), nonD = emptyCounter(), nonG = emptyCounter();
+    const nonP = emptyCounter(), nonD = emptyCounter(), nonG = 0;
 
     addSoloOfficial(offP, soloOff);
     addSoloOfficial(offB, bonusOff);
@@ -585,7 +591,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
     if (hasNonOfficiel) {
         tableTotal("Total non officiel", [
             { label: "Solos", values: nonP },
-            { label: "Duos", values: nonD },
+            //{ label: "Duos", values: nonD },
             { label: "Groupe", values: [nonG] }
         ]);
     }
