@@ -616,7 +616,12 @@ function tableTotal(title, counters, addColumnTotal = true) {
         tableTotal("Total cumulé", [
             {
                 label: "Total Officiel + \nNon officiel",
-                values: offP.map((v, i) => v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i])
+                values: offP.map((v, i) => {
+                    // Woojin = index 0
+                    if (i === 0) return v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i] + nonG.avec;
+                    // Autres membres = index 1 à 8
+                    return v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i] + nonG.avec + nonG.sans;
+                })
             }
         ],
         false);
