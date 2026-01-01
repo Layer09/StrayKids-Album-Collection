@@ -491,46 +491,44 @@ function tableTotal(title, counters, addColumnTotal = true) {
         tbody.appendChild(tr);
     });
 
-    // === TOTAL DES COLONNES ===
-    if (addColumnTotal) {
-        const totalRow = document.createElement("tr");
-        totalRow.className = "total-row";
+// === TOTAL DES COLONNES ===
+if (addColumnTotal) {
+    const totalRow = document.createElement("tr");
+    totalRow.className = "total-row";
 
-        const thTotal = document.createElement("th");
-        thTotal.textContent = "Total";
-        totalRow.appendChild(thTotal);
+    const thTotal = document.createElement("th");
+    thTotal.textContent = "Total";
+    totalRow.appendChild(thTotal);
 
-        for (let i = 0; i < MEMBERS.length; i++) {
-            let sum = 0;
+    for (let i = 0; i < MEMBERS.length; i++) {
+        let sum = 0;
 
-            counters.forEach(row => {
-                const label = row.label.trim().toLowerCase();
+        counters.forEach(row => {
+            const label = row.label.trim().toLowerCase();
 
-                if (label === "bonus") {
-                    sum += bonusValue(row.values[i]);
+            if (label === "groupe") {
+                // Woojin = avec
+                if (i === 0) {
+                    sum += row.values.avec;
                 }
-                else if (label === "groupe") {
-                    // Woojin = avec
-                    if (i === 0) {
-                        sum += row.values.avec;
-                    }
-                    // autres membres = avec + sans
-                    else {
-                        sum += row.values.avec + row.values.sans;
-                    }
-                }
+                // autres membres = avec + sans
                 else {
-                    sum += Number(row.values[i]) || 0;
+                    sum += row.values.avec + row.values.sans;
                 }
-            });
+            }
+            else {
+                // BONUS déjà compté dans addBonus => pas besoin de bonusValue
+                sum += Number(row.values[i]) || 0;
+            }
+        });
 
-            const td = document.createElement("td");
-            td.textContent = sum;
-            totalRow.appendChild(td);
-        }
-
-        tbody.appendChild(totalRow);
+        const td = document.createElement("td");
+        td.textContent = sum;
+        totalRow.appendChild(td);
     }
+
+    tbody.appendChild(totalRow);
+}
 
     table.appendChild(tbody);
     s.appendChild(table);
