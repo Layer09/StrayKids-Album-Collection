@@ -586,7 +586,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
         tableTotal("Total non officiel", [
             { label: "Solos", values: nonP },
             { label: "Duos", values: nonD },
-            { label: "Groupe, values: [nonG] }
+            { label: "Groupe", values: [nonG] }
         ]);
     }
 
