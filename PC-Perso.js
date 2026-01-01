@@ -355,6 +355,58 @@ async function tableDuos(parent, csv, title, isOff) {
     s.appendChild(table);
 }
 
+/* Tableau "Groupe" Non officiel */
+async function tableGroupeNonOfficiel(parent, csv) {
+    if (!csv || csv.length < 2) return;
+
+    const avec = parseInt(csv[1][0], 10) || 0;
+    const sans = parseInt(csv[1][1], 10) || 0;
+
+    // Si tout est zéro, ne rien afficher
+    if (avec === 0 && sans === 0) return;
+
+    const s = section(parent, "Groupe");
+    const table = document.createElement("table");
+
+    const thead = document.createElement("thead");
+    const trh = document.createElement("tr");
+    trh.appendChild(document.createElement("th")); // Coin vide
+    const th9 = document.createElement("th");
+    th9.textContent = "9 membres";
+    trh.appendChild(th9);
+    const th8 = document.createElement("th");
+    th8.textContent = "8 membres";
+    trh.appendChild(th8);
+    thead.appendChild(trh);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+    const tr = document.createElement("tr");
+
+    // Nom de la ligne
+    const th = document.createElement("th");
+    th.textContent = "Groupe";
+    tr.appendChild(th);
+
+    // 9 membres = avecWoojin
+    const tdAvec = document.createElement("td");
+    for (let i = 0; i < avec; i++) {
+        tdAvec.appendChild(img(LOGO_IMAGE, "pc-img"));
+    }
+    tr.appendChild(tdAvec);
+
+    // 8 membres = sansWoojin
+    const tdSans = document.createElement("td");
+    for (let i = 0; i < sans; i++) {
+        tdSans.appendChild(img(LOGO_IMAGE, "pc-img"));
+    }
+    tr.appendChild(tdSans);
+
+    tbody.appendChild(tr);
+    table.appendChild(tbody);
+    s.appendChild(table);
+}
+
 function bonusValue(v) {
     if (v == null) return 0;
 
@@ -584,6 +636,7 @@ if (addColumnTotal) {
         section(details, "Non officiel", true);
         await tablePhotocards(details, soloNon);
         await tableDuos(details, duoNon, "Duos", false);
+        await tableGroupeNonOfficiel(details, groupeNon);
         hr(details);
     }
 
