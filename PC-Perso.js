@@ -355,6 +355,28 @@ async function tableDuos(parent, csv, title, isOff) {
     s.appendChild(table);
 }
 
+function bonusValue(v) {
+    if (v == null) return 0;
+
+    const value = String(v).trim();
+
+    if (value === "" || value === "0") {
+        return 0;
+    }
+
+    // valeurs multiples
+    if (value.startsWith("(") && value.endsWith(")")) {
+        return value
+            .slice(1, -1)
+            .split("|")
+            .map(s => s.trim())
+            .filter(Boolean).length;
+    }
+
+    // valeur simple
+    return 1;
+}
+
 /*************************************************
  * ====== TOTALS ================================
  *************************************************/
@@ -419,6 +441,26 @@ function tableTotal(title, counters, addColumnTotal = true) {
     const tbody = document.createElement("tbody");
 
     counters.forEach(row => {
+        const label = row.label.trim().toLowerCase();
+
+        /* ===== LIGNE GROUPE (NON OFFICIEL) ===== */
+        if (label === "groupe") {
+            const tr = document.createElement("tr");
+
+            const th = document.createElement("th");
+            th.textContent = row.label;
+            tr.appendChild(th);
+
+            const td = document.createElement("td");
+            td.colSpan = MEMBERS.length; // occupe 9 colonnes
+            td.textContent = row.values[0] ?? 0;
+
+            tr.appendChild(td);
+            tbody.appendChild(tr);
+            return;
+        }
+
+        /* ===== LIGNES NORMALES ===== */
         const tr = document.createElement("tr");
         const th = document.createElement("th");
         th.textContent = row.label;
@@ -433,7 +475,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
         tbody.appendChild(tr);
     });
 
-    // === LIGNE TOTAL DES COLONNES ===
+    // === TOTAL DES COLONNES ===
     if (addColumnTotal) {
         const totalRow = document.createElement("tr");
         totalRow.className = "total-row";
@@ -446,25 +488,17 @@ function tableTotal(title, counters, addColumnTotal = true) {
             let sum = 0;
 
             counters.forEach(row => {
-                const value = row.values[i];
+                const label = row.label.trim().toLowerCase();
 
-                // CAS SPÉCIAL BONUS
-                if (row.label === "Bonus") {
-                    if (value === 0 || value === "0" || value === "") {
-                        // vaut 0 → rien à ajouter
-                    } else if (typeof value === "string") {
-                        const match = value.match(/^\((.+)\)$/);
-                        if (match) {
-                            // "(a|b|c)" → compte le nombre d'éléments
-                            sum += match[1].split("|").length;
-                        } else {
-                            // chaîne simple ("bleu") → vaut 1
-                            sum += 1;
-                        }
-                    }
-                } else {
-                    // comportement normal pour les autres lignes
-                    sum += Number(value) || 0;
+                if (label === "bonus") {
+                    sum += bonusValue(row.values[i]);
+                }
+                else if (label === "groupe") {
+                    // Groupe compte pour CHAQUE colonne
+                    sum += Number(row.values[0]) || 0;
+                }
+                else {
+                    sum += Number(row.values[i]) || 0;
                 }
             });
 
@@ -480,7 +514,6 @@ function tableTotal(title, counters, addColumnTotal = true) {
     s.appendChild(table);
 }
 
-
 /*************************************************
  * INIT
  *************************************************/
@@ -495,6 +528,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
 
     const soloNon = await loadCSV(`./PC-csv/${prenom}/Solo-non_off.csv`);
     const duoNon = await loadCSV(`./PC-csv/${prenom}/Duos-non_off.csv`);
+    const groupeNon = await loadCSV(`./PC-csv/${prenom}/Groupe-non_off.csv`);
 
     // Vérifier si au moins un tableau a du contenu
     const hasOfficiel =
@@ -505,7 +539,8 @@ function tableTotal(title, counters, addColumnTotal = true) {
 
     const hasNonOfficiel =
         soloHasImages(soloNon) ||
-        duoHasImages(duoNon);
+        duoHasImages(duoNon) ||
+        groupeHasImages(groupeNon);
 
     // ========= OFFICIEL =========
     if (hasOfficiel) {
@@ -528,7 +563,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
     section(recap, "Total", true);
 
     const offP = emptyCounter(), offB = emptyCounter(), offX = emptyCounter(), offD = emptyCounter();
-    const nonP = emptyCounter(), nonD = emptyCounter();
+    const nonP = emptyCounter(), nonD = emptyCounter(), nonG = emptyCounter();
 
     addSoloOfficial(offP, soloOff);
     addSoloOfficial(offB, bonusOff);
@@ -550,7 +585,8 @@ function tableTotal(title, counters, addColumnTotal = true) {
     if (hasNonOfficiel) {
         tableTotal("Total non officiel", [
             { label: "Solos", values: nonP },
-            { label: "Duos", values: nonD }
+            { label: "Duos", values: nonD },
+            { label: "Groupe, values: [nonG] }
         ]);
     }
 
