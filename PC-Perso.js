@@ -185,7 +185,7 @@ async function tableBonusXXL(parent, bonus, xxl) {
         { label: "Grandes images", data: xxl }
     ].forEach(b => {
 
-        // ⚠️ Ne jamais bloquer Bonus
+        // Ne jamais bloquer Bonus
         if (b.label !== "Bonus" && !soloHasImages(b.data)) return;
 
         const tr = document.createElement("tr");
@@ -368,25 +368,24 @@ async function tableGroupeNonOfficiel(parent, csv) {
     const s = section(parent, "Groupe");
     const table = document.createElement("table");
 
+    // Entête avec seulement 2 colonnes
     const thead = document.createElement("thead");
     const trh = document.createElement("tr");
-    trh.appendChild(document.createElement("th")); // Coin vide
+
     const th9 = document.createElement("th");
     th9.textContent = "9 membres";
     trh.appendChild(th9);
+
     const th8 = document.createElement("th");
     th8.textContent = "8 membres";
     trh.appendChild(th8);
+
     thead.appendChild(trh);
     table.appendChild(thead);
 
+    // Corps du tableau
     const tbody = document.createElement("tbody");
     const tr = document.createElement("tr");
-
-    // Nom de la ligne
-    const th = document.createElement("th");
-    th.textContent = "Groupe";
-    tr.appendChild(th);
 
     // 9 membres = avecWoojin
     const tdAvec = document.createElement("td");
