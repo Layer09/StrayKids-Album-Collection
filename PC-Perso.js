@@ -404,12 +404,14 @@ function tableTotal(title, counters, addColumnTotal = true) {
     const thead = document.createElement("thead");
     const trh = document.createElement("tr");
     trh.appendChild(document.createElement("th"));
+
     MEMBERS.forEach((m, i) => {
         const th = document.createElement("th");
         th.textContent = m;
         th.appendChild(img(MEMBER_IMAGES[i], "member-icon"));
         trh.appendChild(th);
     });
+
     thead.appendChild(trh);
     table.appendChild(thead);
 
@@ -422,7 +424,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
         th.textContent = row.label;
         tr.appendChild(th);
 
-        row.values.forEach((v, i) => {
+        row.values.forEach(v => {
             const td = document.createElement("td");
             td.textContent = v;
             tr.appendChild(td);
@@ -431,7 +433,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
         tbody.appendChild(tr);
     });
 
-    // === LIGNE TOTAL DES COLONNES (optionnelle) ===
+    // === LIGNE TOTAL DES COLONNES ===
     if (addColumnTotal) {
         const totalRow = document.createElement("tr");
         totalRow.className = "total-row";
@@ -442,9 +444,30 @@ function tableTotal(title, counters, addColumnTotal = true) {
 
         for (let i = 0; i < MEMBERS.length; i++) {
             let sum = 0;
+
             counters.forEach(row => {
-                sum += row.values[i];
+                const value = row.values[i];
+
+                // CAS SPÉCIAL BONUS
+                if (row.label === "Bonus") {
+                    if (value === 0 || value === "0" || value === "") {
+                        // vaut 0 → rien à ajouter
+                    } else if (typeof value === "string") {
+                        const match = value.match(/^\((.+)\)$/);
+                        if (match) {
+                            // "(a|b|c)" → compte le nombre d'éléments
+                            sum += match[1].split("|").length;
+                        } else {
+                            // chaîne simple ("bleu") → vaut 1
+                            sum += 1;
+                        }
+                    }
+                } else {
+                    // comportement normal pour les autres lignes
+                    sum += Number(value) || 0;
+                }
             });
+
             const td = document.createElement("td");
             td.textContent = sum;
             totalRow.appendChild(td);
@@ -456,6 +479,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
     table.appendChild(tbody);
     s.appendChild(table);
 }
+
 
 /*************************************************
  * INIT
