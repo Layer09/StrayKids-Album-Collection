@@ -530,6 +530,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
     const duoNon = await loadCSV(`./PC-csv/${prenom}/Duos-non_off.csv`);
     const groupeNon = await loadCSV(`./PC-csv/${prenom}/Groupe-non_off.csv`);
 
+    let nonG = 0;
     if (groupeNon && groupeNon.length > 0) {
         const raw = groupeNon.flat().find(v => v.trim() !== "");
         nonG = parseInt(raw, 10) || 0;
@@ -569,7 +570,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
     section(recap, "Total", true);
 
     const offP = emptyCounter(), offB = emptyCounter(), offX = emptyCounter(), offD = emptyCounter();
-    const nonP = emptyCounter(), nonD = emptyCounter(), nonG = 0;
+    const nonP = emptyCounter(), nonD = emptyCounter();
 
     addSoloOfficial(offP, soloOff);
     addSoloOfficial(offB, bonusOff);
