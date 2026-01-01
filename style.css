@@ -315,32 +315,27 @@ tbody th {
 
 /* cases interdites (triangle inférieur + diagonale) */
 .duo-disabled {
-    background-color: #0a0a0a;
+    background-color: #0a0a0a;   /* fond sombre pour indiquer inaccessibilité */
+    display: flex;
+    justify-content: center;      /* centrer horizontalement la croix */
+    align-items: center;          /* centrer verticalement la croix */
     position: relative;
 }
 
-.duo-disabled::before,
+/* croix responsive */
 .duo-disabled::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 10%;
-    width: 80%;
-    height: 1px;
-    background-color: #333;
+    content: "✕";                 /* symbole croix */
+    color: #555;                  /* couleur gris clair pour contraste */
+    font-size: min(2vw, 1.5em);   /* taille adaptable selon largeur de la fenêtre et max 1.5em */
+    font-weight: bold;
+    pointer-events: none;          /* clics passent à travers */
 }
 
-.duo-disabled::before {
-    transform: rotate(45deg);
-}
-
-.duo-disabled::after {
-    transform: rotate(-45deg);
-}
-
+/* masquer les images dans les cases barrées */
 .duo-disabled img {
     display: none;
 }
+
 
 /* ======================================================
    =================== SÉPARATEURS ======================
