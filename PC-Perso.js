@@ -418,6 +418,15 @@ function addDuos(counter, csv) {
     }
 }
 
+function addBonus(counter, csv) {
+    for (let r = 1; r < csv.length; r++) {
+        for (let c = 0; c < MEMBERS.length; c++) {
+            const value = csv[r][c + 2]; // +2 pour Nom Album / Chemin Album
+            counter[c] += bonusValue(value);
+        }
+    }
+}
+
 function tableTotal(title, counters, addColumnTotal = true) {
     const s = section(recap, title);
     const table = document.createElement("table");
@@ -587,7 +596,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
     const nonP = emptyCounter(), nonD = emptyCounter();
 
     addSoloOfficial(offP, soloOff);
-    addSoloOfficial(offB, bonusOff);
+    addBonus(offB, bonusOff);
     addSoloOfficial(offX, xxlOff);
     addDuos(offD, duoOff);
 
