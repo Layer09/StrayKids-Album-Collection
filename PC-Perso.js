@@ -443,19 +443,26 @@ function tableTotal(title, counters, addColumnTotal = true) {
     counters.forEach(row => {
         const label = row.label.trim().toLowerCase();
 
-        /* ===== LIGNE GROUPE (NON OFFICIEL) ===== */
+        /* ===== LIGNE GROUPE (CAS SPÉCIAL) ===== */
         if (label === "groupe") {
             const tr = document.createElement("tr");
 
+            // Colonne titre
             const th = document.createElement("th");
             th.textContent = row.label;
             tr.appendChild(th);
 
-            const td = document.createElement("td");
-            td.colSpan = MEMBERS.length; // occupe 9 colonnes
-            td.textContent = row.values[0] ?? 0;
+            // Avec Woojin (1 colonne)
+            const tdAvec = document.createElement("td");
+            tdAvec.textContent = row.values.avec;
+            tr.appendChild(tdAvec);
 
-            tr.appendChild(td);
+            // Sans Woojin + Avec Woojin (8 colonnes)
+            const tdSans = document.createElement("td");
+            tdSans.colSpan = MEMBERS.length - 1; // 8
+            tdSans.textContent = row.values.avec + row.values.sans;
+            tr.appendChild(tdSans);
+
             tbody.appendChild(tr);
             return;
         }
@@ -494,8 +501,14 @@ function tableTotal(title, counters, addColumnTotal = true) {
                     sum += bonusValue(row.values[i]);
                 }
                 else if (label === "groupe") {
-                    // Groupe compte pour CHAQUE colonne
-                    sum += Number(row.values[0]) || 0;
+                    // Woojin = avec
+                    if (i === 0) {
+                        sum += row.values.avec;
+                    }
+                    // autres membres = avec + sans
+                    else {
+                        sum += row.values.avec + row.values.sans;
+                    }
                 }
                 else {
                     sum += Number(row.values[i]) || 0;
@@ -514,6 +527,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
     s.appendChild(table);
 }
 
+
 /*************************************************
  * INIT
  *************************************************/
@@ -530,12 +544,12 @@ function tableTotal(title, counters, addColumnTotal = true) {
     const duoNon = await loadCSV(`./PC-csv/${prenom}/Duos-non_off.csv`);
     const groupeNon = await loadCSV(`./PC-csv/${prenom}/Groupe-non_off.csv`);
 
-    let nonG = 0;
-    if (groupeNon && groupeNon.length > 0) {
-        const raw = groupeNon.flat().find(v => v.trim() !== "");
-        nonG = parseInt(raw, 10) || 0;
+    let nonG = { avec: 0, sans: 0 };
+    
+    if (groupeNon && groupeNon.length >= 2) {
+        nonG.avec = parseInt(groupeNon[1][0], 10) || 0;
+        nonG.sans = parseInt(groupeNon[1][1], 10) || 0;
     }
-
 
     // Vérifier si au moins un tableau a du contenu
     const hasOfficiel =
@@ -593,7 +607,7 @@ function tableTotal(title, counters, addColumnTotal = true) {
         tableTotal("Total non officiel", [
             { label: "Solos", values: nonP },
             //{ label: "Duos", values: nonD },
-            { label: "Groupe", values: [nonG] }
+            { label: "Groupe", values: nonG }
         ]);
     }
 
