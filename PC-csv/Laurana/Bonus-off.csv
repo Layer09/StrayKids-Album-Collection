@@ -13,7 +13,7 @@ All_in, ./images/albums/11-2020-All_in/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Noeasy, ./images/albums/12-2021-Noeasy/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Scars, ./images/albums/13-2021-Scars/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Christmas_eveL, ./images/albums/14-2021-Christmas_eveL/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
-Oddinary, ./images/albums/15-2022-Oddinary/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, ID Photocard
+Oddinary, ./images/albums/15-2022-Oddinary/Couverture.jpg, 0, 0, 0, 0, 0, ID Photocard, 0, 0, ID Photocard
 Circus, ./images/albums/16-2022-Circus/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Maxident, ./images/albums/17-2022-Maxident/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 The_sound, ./images/albums/18-2023-The_sound/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -26,6 +26,7 @@ Hop, ./images/albums/24-2024-Hop/Couverture.jpg, 0, 0, Trading card, Trading car
 Hollow, ./images/albums/25-2025-Hollow/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Karma, ./images/albums/26-2025-Karma/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Do_it, ./images/albums/27-2025-Do_it/Couverture.jpg, 0, 0, 0, 0, Lenticulaire 3D, Miroir, 0, Lenticulaire 3D, 0 
+
 
 
 
