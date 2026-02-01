@@ -3,7 +3,7 @@ Mixtape, ./images/albums/01-2018-Mixtape/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0,
 I am not, ./images/albums/02-2018-I_am_not/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 I am who, ./images/albums/03-2018-I_am_who/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 I am you, ./images/albums/04-2018-I_am_you/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
-Clé 1 : Miroh, ./images/albums/05-2019-Cle_miroh/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Clé 1 : Miroh, ./images/albums/05-2019-Cle_miroh/Couverture.jpg, 0, 0, 2, 0, 0, 0, 0, 1, 0
 Clé 2 : Yellow wood, ./images/albums/06-2019-Cle_yellow_wood/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Clé : Levanter, ./images/albums/07-2019-Cle_levanter/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Top, ./images/albums/08-2020-Top/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -29,6 +29,7 @@ Hollow, ./images/albums/25-2025-Hollow/Couverture.jpg, 0, 0, 0, 0, 0, 1, 0, 0, 0
 Karma, ./images/albums/26-2025-Karma/Couverture.jpg, 0, 0, 0, 0, 1, 0, 0, 0, 0
 Do it, ./images/albums/27-2025-Do_it/Couverture.jpg, 0, 0, 0, 0, 1, 0, 0, 0, 1
 DVD DominATE - Seoul, ./images/DVD/03-2025-DominATE.png, 0, 1, 1, 1, 1, 1, 1, 1, 1
+
 
 
 
