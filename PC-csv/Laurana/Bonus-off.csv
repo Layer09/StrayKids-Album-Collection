@@ -2,7 +2,7 @@ Nom_Album, Chemin_Album, Woojin, Bang_Chan, Lee_Know, Changbin, Hyunjin, Han, Fe
 Mixtape, ./images/albums/01-2018-Mixtape/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 I_am_not, ./images/albums/02-2018-I_am_not/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 I_am_who, ./images/albums/03-2018-I_am_who/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
-I_am_you, ./images/albums/04-2018-I_am_you/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
+I_am_you, ./images/albums/04-2018-I_am_you/Couverture.jpg, 0, 0, QR Photocard, 0, 0, 0, 0, 0, 0
 Clé_1_:_Miroh, ./images/albums/05-2019-Cle_miroh/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Clé_2_:_Yellow_wood, ./images/albums/06-2019-Cle_yellow_wood/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Clé_:_Levanter, ./images/albums/07-2019-Cle_levanter/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -29,6 +29,7 @@ Hollow, ./images/albums/25-2025-Hollow/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Karma, ./images/albums/26-2025-Karma/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Do_it, ./images/albums/27-2025-Do_it/Couverture.jpg, 0, 0, 0, 0, Lenticulaire 3D, Miroir, 0, Lenticulaire 3D, 0 
 DVD DominATE - Seoul, ./images/DVD/03-2025-DominATE.png, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
 
 
 
