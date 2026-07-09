@@ -1,6 +1,6 @@
 Nom_Album, Chemin_Album, Woojin, Bang_Chan, Lee_Know, Changbin, Hyunjin, Han, Felix, Seungmin, I.N
 Mixtape, ./images/albums/01-2018-Mixtape/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
-I_am_not, ./images/albums/02-2018-I_am_not/Couverture.jpg, 0, Trio photocard, 0, 0, Trio photocard, 0, Childhood photocard, Trio photocard, 0
+I_am_not, ./images/albums/02-2018-I_am_not/Couverture.jpg, 0, Trio photocard (I am), Trio photocard (Not), 0, Trio photocard (I am)|Trio photocard (Not), Trio photocard (Not), Childhood photocard, Trio photocard (I am)|Childhood photocard, 0
 I_am_who, ./images/albums/03-2018-I_am_who/Couverture.jpg, 0, 0, 0, Self portrait, 0, 0, 0, 0, 0
 I_am_you, ./images/albums/04-2018-I_am_you/Couverture.jpg, 0, 0, QR Photocard, 0, 0, 0, 0, 0, QR Photocard
 Clé_1_:_Miroh, ./images/albums/05-2019-Cle_miroh/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -14,7 +14,7 @@ DVD District 9 : Unlock - Seoul, ./images/DVD/01-2021-District9_Unlock.png, 0, 0
 Noeasy, ./images/albums/12-2021-Noeasy/Couverture.jpg, 0, Poster C?, Poster D?, Poster C?, 0, 0, 0, 0, Poster D?
 Scars, ./images/albums/13-2021-Scars/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Christmas_eveL, ./images/albums/14-2021-Christmas_evel/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
-Oddinary, ./images/albums/15-2022-Oddinary/Couverture.jpg, 0, 0, 0, 0, 0, ID Photocard, 0, 0, ID Photocard
+Oddinary, ./images/albums/15-2022-Oddinary/Couverture.jpg, 0, 0, 0, ID Photocard, 0, ID Photocard, 0, 0, ID Photocard
 Circus, ./images/albums/16-2022-Circus/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Maxident, ./images/albums/17-2022-Maxident/Couverture.jpg, 0, 0, 0, Stickers, Stickers, 0, 0, 0, 0
 The_sound, ./images/albums/18-2023-The_sound/Couverture.jpg, 0, 0, 0, 0, 0, 0, 0, 0, 0
