@@ -598,7 +598,7 @@ if (addColumnTotal) {
     if (hasOfficiel) {
         section(details, "Officiel", true);
         await tablePhotocards(details, soloOff);
-        await tableBonusXXL(details, bonusOff);
+        await tableBonus(details, bonusOff);
         await tableDuos(details, duoOff, "Duos", true);
         hr(details);
     }
