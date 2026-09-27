@@ -154,12 +154,11 @@ async function tablePhotocards(parent, csv) {
     s.appendChild(table);
 }
 
-/* Bonus + XXL */
-async function tableBonusXXL(parent, bonus, xxl) {
-    // Si vraiment aucun contenu du tout
-    if (!soloHasImages(bonus) && !soloHasImages(xxl)) return;
+/* Bonus */
+async function tableBonus(parent, bonus) {
+    if (!soloHasImages(bonus)) return;
 
-    const s = section(parent, "Bonus et grandes images");
+    const s = section(parent, "Bonus");
     const table = document.createElement("table");
 
     /* ===== THEAD ===== */
@@ -179,69 +178,45 @@ async function tableBonusXXL(parent, bonus, xxl) {
 
     /* ===== TBODY ===== */
     const tbody = document.createElement("tbody");
+    const tr = document.createElement("tr");
 
-    [
-        { label: "Bonus", data: bonus },
-        { label: "Grandes images", data: xxl }
-    ].forEach(b => {
+    const th = document.createElement("th");
+    th.textContent = "Bonus";
+    tr.appendChild(th);
 
-        // Ne jamais bloquer Bonus
-        if (b.label !== "Bonus" && !soloHasImages(b.data)) return;
+    MEMBERS.forEach((_, c) => {
+        const td = document.createElement("td");
 
-        const tr = document.createElement("tr");
-        const th = document.createElement("th");
-        th.textContent = b.label;
-        tr.appendChild(th);
+        for (let r = 1; r < bonus.length; r++) {
+            const value = bonus[r][c + 2];
+            if (!value || value === "0") continue;
 
-        MEMBERS.forEach((_, c) => {
-            const td = document.createElement("td");
+            const clean = value.replace(/^\(|\)$/g, "");
+            const rewards = clean.includes("|")
+                ? clean.split("|").map(v => v.trim())
+                : [clean];
 
-            for (let r = 1; r < b.data.length; r++) {
+            rewards.forEach(reward => {
+                const wrapper = document.createElement("div");
+                wrapper.className = "bonus-item";
 
-                /* ===== BONUS ===== */
-                if (b.label === "Bonus") {
-                    const value = b.data[r][c + 2];
-                    if (!value || value === "0") continue;
+                // Image d’album
+                wrapper.appendChild(img(bonus[r][1], "pc-img"));
 
-                    const clean = value.replace(/^\(|\)$/g, "");
-                    const rewards = clean.includes("|")
-                        ? clean.split("|").map(v => v.trim())
-                        : [clean];
+                // Texte du bonus
+                const label = document.createElement("div");
+                label.className = "bonus-label";
+                label.textContent = reward;
 
-                    rewards.forEach(reward => {
-                        const wrapper = document.createElement("div");
-                        wrapper.className = "bonus-item";
+                wrapper.appendChild(label);
+                td.appendChild(wrapper);
+            });
+        }
 
-                        // Image d’album (inchangée)
-                        wrapper.appendChild(img(b.data[r][1], "pc-img"));
-
-                        // Texte du bonus
-                        const label = document.createElement("div");
-                        label.className = "bonus-label";
-                        label.textContent = reward;
-
-                        wrapper.appendChild(label);
-                        td.appendChild(wrapper);
-                    });
-                }
-
-                /* ===== GRANDES IMAGES (INCHANGÉ) ===== */
-                else {
-                    const n = parseInt(b.data[r][c + 2], 10);
-                    if (!n || isNaN(n)) continue;
-
-                    for (let i = 0; i < n; i++) {
-                        td.appendChild(img(b.data[r][1], "pc-img"));
-                    }
-                }
-            }
-
-            tr.appendChild(td);
-        });
-
-        tbody.appendChild(tr);
+        tr.appendChild(td);
     });
 
+    tbody.appendChild(tr);
     table.appendChild(tbody);
     s.appendChild(table);
 }
@@ -595,7 +570,6 @@ if (addColumnTotal) {
     // Chargement des CSV
     const soloOff = await loadCSV(`./PC-csv/${prenom}/Solo-off.csv`);
     const bonusOff = await loadCSV(`./PC-csv/${prenom}/Bonus-off.csv`);
-    const xxlOff = await loadCSV(`./PC-csv/${prenom}/Solo_XXL-off.csv`);
     const duoOff = await loadCSV(`./PC-csv/${prenom}/Duos-off.csv`);
 
     const soloNon = await loadCSV(`./PC-csv/${prenom}/Solo-non_off.csv`);
@@ -613,7 +587,6 @@ if (addColumnTotal) {
     const hasOfficiel =
         soloHasImages(soloOff) ||
         soloHasImages(bonusOff) ||
-        soloHasImages(xxlOff) ||
         duoHasImages(duoOff);
 
     const hasNonOfficiel =
@@ -625,7 +598,7 @@ if (addColumnTotal) {
     if (hasOfficiel) {
         section(details, "Officiel", true);
         await tablePhotocards(details, soloOff);
-        await tableBonusXXL(details, bonusOff, xxlOff);
+        await tableBonusXXL(details, bonusOff);
         await tableDuos(details, duoOff, "Duos", true);
         hr(details);
     }
@@ -647,7 +620,7 @@ if (addColumnTotal) {
 
     addSoloOfficial(offP, soloOff);
     addBonus(offB, bonusOff);
-    addSoloOfficial(offX, xxlOff);
+    // addSoloOfficial(offX, xxlOff);
     addDuos(offD, duoOff);
 
     addSoloNonOfficial(nonP, soloNon);
@@ -657,7 +630,6 @@ if (addColumnTotal) {
         tableTotal("Total officiel", [
             { label: "Photocards", values: offP },
             { label: "Bonus", values: offB },
-            { label: "Grandes images", values: offX },
             { label: "Duos", values: offD }
         ]);
     }
@@ -677,9 +649,9 @@ if (addColumnTotal) {
                 label: "Total Officiel + \nNon officiel",
                 values: offP.map((v, i) => {
                     // Woojin = index 0
-                    if (i === 0) return v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i] + nonG.avec;
+                    if (i === 0) return v + offB[i] + offD[i] + nonP[i] + nonD[i] + nonG.avec;
                     // Autres membres = index 1 à 8
-                    return v + offB[i] + offX[i] + offD[i] + nonP[i] + nonD[i] + nonG.avec + nonG.sans;
+                    return v + offB[i] + offD[i] + nonP[i] + nonD[i] + nonG.avec + nonG.sans;
                 })
             }
         ],
