@@ -156,8 +156,6 @@ async function tablePhotocards(parent, csv) {
 
 /* Bonus */
 async function tableBonus(parent, bonus) {
-    console.log("BONUS CSV :", bonus);
-
     const s = section(parent, "Bonus");
     const table = document.createElement("table");
 
