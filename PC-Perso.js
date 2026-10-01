@@ -179,9 +179,6 @@ async function tableBonus(parent, bonus) {
     const tr = document.createElement("tr");
 
     const th = document.createElement("th");
-    th.textContent = "Bonus";
-    tr.appendChild(th);
-
     MEMBERS.forEach((_, c) => {
         const td = document.createElement("td");
 
